@@ -1,0 +1,5 @@
+﻿  main.cpp
+  matematicacpp.cpp
+C:\Users\User\Documents\EstudoLinguagens\C++\Curso Udemy 15 - Programa Matematica\ProgrmaMatematica\ProgrmaMatematica\matematicacpp.cpp(34,13): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+  Generating Code...
+  ProgrmaMatematica.vcxproj -> C:\Users\User\Documents\EstudoLinguagens\C++\Curso Udemy 15 - Programa Matematica\ProgrmaMatematica\Debug\ProgrmaMatematica.exe

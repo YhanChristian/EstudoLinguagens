@@ -146,7 +146,7 @@ class Hangman:
 	#Método com mecânica de jogo da forca
 	def play_game(self):
 
-		while self.failed_attemps < len(board):
+		while self.failed_attemps <= len(board):
 			self.print_game_status()
 			user_input = self.get_user_input()
 

@@ -27,6 +27,10 @@ Route::get('/route-2', function(){
     return redirect()->route('site.route-1');
 })->name('site.route-2');
 
+// Route p/teste passagem parâmetro para controller
+
+Route::get('/teste/{x}/{y}', 'TesteController@teste')->name('site.teste');
+
 //Implementação de Rota de Fallback (Contigência) caso o user acesse rota inexistente
 Route::fallback(function(){
    echo 'A rota acessada não existe, <a href="'.route('site.index').'">clique aqui</a> para ir para index';

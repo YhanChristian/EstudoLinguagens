@@ -8,7 +8,7 @@ use App\SiteContato;
 
 class ContatoController extends Controller
 {
-    public function contato(Request $request)
+    public function contato()
     {
         //echo 'Olá, seja bem vindo rota contato';
         //var_dump($_POST);
@@ -16,7 +16,7 @@ class ContatoController extends Controller
         //print_r($request->all());
         
         //  Instância conato para receber dados request e salvar no BD
-        $contato = new SiteContato();
+       //$contato = new SiteContato();
 
         // Forma 1 com os atributos
        /* $contato->nome = $request->input('nome');
@@ -27,11 +27,29 @@ class ContatoController extends Controller
         */
 
         //Forma 2 com o método fill/create (Classe Model - deve ter fillable.)
-        $contato->fill($request->all());
-        $contato->save();
+        //$contato->fill($request->all());
+        //$contato->save();
 
        // print_r($contato->getAttributes());
 
         return view('site.contato');
+    }
+    public function salvar(Request $request)
+    {
+        //Faço a validação do FORM recebido 
+
+        $request->validate([
+            'nome' => 'required',
+            'telefone' => 'required',
+            'email' => 'required',
+            'motivo_contato' => 'required',
+            'mensagem' => 'required'
+        ]);
+
+       /* $contato = new SiteContato();
+        $contato->fill($request->all());
+        $contato->save(); */
+       // print_r($request->all());
+
     }
 }

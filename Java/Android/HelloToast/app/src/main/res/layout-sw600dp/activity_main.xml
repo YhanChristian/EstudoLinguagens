@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:backgroundTint="@color/teal_700"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/btnCount"
+        android:layout_width="479dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="@color/teal_700"
+        android:onClick="countUp"
+        android:text="@string/count"
+        android:textColor="@color/black"
+        android:textSize="60sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnToast"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnToast"
+        android:layout_width="478dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/teal_700"
+        android:onClick="showToast"
+        android:text="@string/toast"
+        android:textColor="@color/black"
+        android:textSize="60sp"
+        app:layout_constraintEnd_toStartOf="@+id/btnCount"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtShowCount"
+        android:layout_width="967dp"
+        android:layout_height="849dp"
+        android:background="#FFFF00 "
+        android:gravity="center"
+        android:text="@string/count_initial_value"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="180sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnToast"
+        app:layout_constraintVertical_bias="0.055" />
+</androidx.constraintlayout.widget.ConstraintLayout>

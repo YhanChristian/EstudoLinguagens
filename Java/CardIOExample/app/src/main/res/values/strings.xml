@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">CardIOExample</string>
-    <string name="scan_card">Scan Card</string>
-    <string name="data_expiracao">Data Expiração</string>
-    <string name="numero_cartao">Número Cartão</string>
-</resources>

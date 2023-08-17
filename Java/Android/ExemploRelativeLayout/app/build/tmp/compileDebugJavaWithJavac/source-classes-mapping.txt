@@ -1,0 +1,26 @@
+com/example/alimentos/services/business/FoodBusiness.java
+ com.example.alimentos.services.business.FoodBusiness
+com/example/alimentos/services/listener/OnListClick.java
+ com.example.alimentos.services.listener.OnListClick
+com/example/alimentos/entities/FoodEntity.java
+ com.example.alimentos.entities.FoodEntity
+com/example/alimentos/ui/viewholder/FoodViewHolder.java
+ com.example.alimentos.ui.viewholder.FoodViewHolder
+ com.example.alimentos.ui.viewholder.FoodViewHolder$1
+com/example/alimentos/services/repository/FoodRepository.java
+ com.example.alimentos.services.repository.FoodRepository
+com/example/alimentos/services/constants/FoodConstants.java
+ com.example.alimentos.services.constants.FoodConstants
+ com.example.alimentos.services.constants.FoodConstants$FILTER
+com/example/alimentos/ui/adapter/FoodAdapter.java
+ com.example.alimentos.ui.adapter.FoodAdapter
+com/example/alimentos/ui/MainActivity.java
+ com.example.alimentos.ui.MainActivity
+ com.example.alimentos.ui.MainActivity$1
+ com.example.alimentos.ui.MainActivity$ViewHolder
+com/example/alimentos/ui/DetailsActivity.java
+ com.example.alimentos.ui.DetailsActivity
+ com.example.alimentos.ui.DetailsActivity$1
+ com.example.alimentos.ui.DetailsActivity$ViewHolder
+com/example/alimentos/BuildConfig.java
+ com.example.alimentos.BuildConfig

@@ -1,20 +1,24 @@
 package com.example.tasks.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.tasks.R;
+import com.example.tasks.service.listener.Feedback;
 import com.example.tasks.viewmodel.RegisterViewModel;
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ViewHolder mViewHolder = new ViewHolder();
+    private final ViewHolder mViewHolder = new ViewHolder();
     private RegisterViewModel mRegisterViewModel;
 
     @SuppressLint("MissingInflatedId")
@@ -48,7 +52,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         int id = v.getId();
 
         /* Trata evento button create */
-        if(id == R.id.button_create) {
+        if (id == R.id.button_create) {
             String name = this.mViewHolder.editName.getText().toString();
             String email = this.mViewHolder.editEmail.getText().toString();
             String password = this.mViewHolder.editPassword.getText().toString();
@@ -57,7 +61,20 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void loadObservers() {}
+    private void loadObservers() {
+        this.mRegisterViewModel.createUser.observe(this, new Observer<Feedback>() {
+            @Override
+            public void onChanged(Feedback feedback) {
+                if (feedback.isSuccess()) {
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), feedback.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
 
 
     /**
@@ -69,5 +86,4 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         EditText editPassword;
         Button buttonCreate;
     }
-
 }

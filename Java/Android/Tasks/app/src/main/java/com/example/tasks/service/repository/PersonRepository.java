@@ -11,36 +11,39 @@ import com.example.tasks.service.repository.remote.PersonService;
 import com.example.tasks.service.repository.remote.RetrofitClient;
 import com.google.gson.Gson;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PersonRepository {
+public class PersonRepository extends BaseRepository {
 
     private PersonService mPersonService;
     private SecurityPreferences mSecurityPreferences;
-    private Context mContext;
 
 
     public PersonRepository(Context context) {
+        super(context);
         this.mPersonService = RetrofitClient.createService((PersonService.class));
         this.mSecurityPreferences = new SecurityPreferences(context);
         this.mContext = context;
     }
 
-    public void createUser(String name, String email, String password) {
+    public void createUser(String name, String email, String password, final APIListener<PersonModel> listener) {
         Call<PersonModel> call = this.mPersonService.createUser(name, email, password, true);
         call.enqueue(new Callback<PersonModel>() {
             @Override
             public void onResponse(Call<PersonModel> call, Response<PersonModel> response) {
-                PersonModel p = response.body();
-                int code = response.code();
-                String s = "";
+                if (response.code() == TaskConstants.HTTP.SUCCESS) {
+                    listener.onSuccess(response.body());
+                } else {
+                    listener.onFailure(handleFailure(response.errorBody()));
+                }
             }
 
             @Override
             public void onFailure(Call<PersonModel> call, Throwable t) {
-                String s = "";
+                listener.onFailure(mContext.getString(R.string.ERROR_UNEXPECTED));
             }
         });
     }
@@ -53,13 +56,7 @@ public class PersonRepository {
                 if (response.code() == TaskConstants.HTTP.SUCCESS) {
                     listener.onSuccess(response.body());
                 } else {
-                    try {
-                        String json = response.errorBody().string();
-                        String str = new Gson().fromJson(json, String.class);
-                        listener.onFailure(str);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    listener.onFailure(handleFailure(response.errorBody()));
                 }
             }
 
@@ -69,6 +66,7 @@ public class PersonRepository {
             }
         });
     }
+
 
     public void saveUserData(PersonModel personModel) {
         this.mSecurityPreferences.storeString(TaskConstants.SHARED.TOKEN_KEY, personModel.getToken());

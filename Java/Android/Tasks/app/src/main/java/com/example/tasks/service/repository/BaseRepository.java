@@ -1,12 +1,8 @@
 package com.example.tasks.service.repository;
 
 import android.content.Context;
-
 import com.example.tasks.R;
 import com.google.gson.Gson;
-
-import java.io.IOException;
-
 import okhttp3.ResponseBody;
 
 public class BaseRepository {

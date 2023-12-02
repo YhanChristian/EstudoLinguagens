@@ -26,6 +26,7 @@ public class PriorityRepository extends BaseRepository {
         super(context);
         mPriorityService = RetrofitClient.createService(PriorityService.class);
         mPriorityDAO = TaskDatabase.getDataBase(context).priorityDAO();
+        mContext = context;
     }
 
     public void all(final APIListener<List<PriorityModel>> listener) {
@@ -45,6 +46,9 @@ public class PriorityRepository extends BaseRepository {
                 listener.onFailure(mContext.getString(R.string.ERROR_UNEXPECTED));
             }
         });
+    }
+    public List<PriorityModel> getList() {
+        return this.mPriorityDAO.list();
     }
 
     public void save(List<PriorityModel> result) {

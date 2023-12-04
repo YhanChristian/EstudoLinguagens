@@ -67,7 +67,6 @@ public class PersonRepository extends BaseRepository {
         });
     }
 
-
     public void saveUserData(PersonModel personModel) {
         this.mSecurityPreferences.storeString(TaskConstants.SHARED.TOKEN_KEY, personModel.getToken());
         this.mSecurityPreferences.storeString(TaskConstants.SHARED.PERSON_KEY, personModel.getPersonKey());

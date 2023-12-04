@@ -53,6 +53,10 @@ public class LoginViewModel extends AndroidViewModel {
     public void verifyLoggedUser() {
         PersonModel personModel = this.mPersonRepository.getUserData();
         Boolean isLogged = !(personModel.getName().isEmpty());
+
+        //Salva dados de headers
+        this.mPersonRepository.saveUserData(personModel);
+
         if(!isLogged) {
             this.mPriorityRepository.all(new APIListener<List<PriorityModel>>() {
                 @Override

@@ -63,6 +63,11 @@ public class TaskRepository extends BaseRepository {
         this.save(call, listener);
     }
 
+    public void delete(int id, final APIListener<Boolean> listener) {
+        Call<Boolean> call = this.mTaskservice.delete(id);
+        this.save(call, listener);
+    }
+
     private void list(Call<List<TaskModel>> call, final APIListener<List<TaskModel>> listener) {
         call.enqueue(new Callback<List<TaskModel>>() {
             @Override
@@ -114,4 +119,6 @@ public class TaskRepository extends BaseRepository {
             }
         });
     }
+
+
 }

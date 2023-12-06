@@ -40,6 +40,7 @@ public class TaskListViewModel extends AndroidViewModel {
                 mList.setValue(result);
 
             }
+
             @Override
             public void onFailure(String message) {
                 mList.setValue(new ArrayList<TaskModel>());
@@ -60,5 +61,19 @@ public class TaskListViewModel extends AndroidViewModel {
                 this.mTaskRepository.overdue(listener);
                 break;
         }
+    }
+
+    public void delete(int id) {
+        this.mTaskRepository.delete(id, new APIListener<Boolean>() {
+            @Override
+            public void onSuccess(Boolean result) {
+                mFeedback.setValue(new Feedback());
+            }
+
+            @Override
+            public void onFailure(String message) {
+                mFeedback.setValue(new Feedback(message));
+            }
+        });
     }
 }

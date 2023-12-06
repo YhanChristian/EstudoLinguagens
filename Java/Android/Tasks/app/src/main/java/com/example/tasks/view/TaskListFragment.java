@@ -55,6 +55,7 @@ public class TaskListFragment extends Fragment {
 
             @Override
             public void onDeleteClick(int id) {
+                mViewModel.delete(id);
             }
 
             @Override
@@ -97,6 +98,18 @@ public class TaskListFragment extends Fragment {
             @Override
             public void onChanged(Feedback feedback) {
                 if (!feedback.isSuccess()) {
+                    toast(feedback.getMessage());
+                }
+            }
+        });
+
+        this.mViewModel.feedback.observe(getViewLifecycleOwner(), new Observer<Feedback>() {
+            @Override
+            public void onChanged(Feedback feedback) {
+                if (feedback.isSuccess()) {
+                    toast(getString(R.string.task_removed));
+                    mViewModel.list(mFilter);
+                } else {
                     toast(feedback.getMessage());
                 }
             }

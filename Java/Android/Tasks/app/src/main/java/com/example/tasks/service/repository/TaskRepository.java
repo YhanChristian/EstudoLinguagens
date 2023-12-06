@@ -24,6 +24,11 @@ public class TaskRepository extends BaseRepository {
     }
 
     private void save(Call<Boolean> call, final APIListener<Boolean> listener) {
+        /* Verifica se existe conexão com a internet */
+        if(!super.isConnectionAvailable()) {
+            listener.onFailure(mContext.getString(R.string.ERROR_INTERNET_CONNECTION));
+            return;
+        }
         call.enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
@@ -68,7 +73,23 @@ public class TaskRepository extends BaseRepository {
         this.save(call, listener);
     }
 
+    public void complete(int id, final APIListener<Boolean> listener) {
+        Call<Boolean> call = this.mTaskservice.complete(id, TaskConstants.TASKSTATUS.COMPLETE);
+        this.save(call, listener);
+    }
+
+
+    public void undo(int id, final APIListener<Boolean> listener) {
+        Call<Boolean> call = this.mTaskservice.undo(id, TaskConstants.TASKSTATUS.INCOMPLETE);
+        this.save(call, listener);
+    }
+
     private void list(Call<List<TaskModel>> call, final APIListener<List<TaskModel>> listener) {
+        /* Verifica se existe conexão com a internet */
+        if(!super.isConnectionAvailable()) {
+            listener.onFailure(mContext.getString(R.string.ERROR_INTERNET_CONNECTION));
+            return;
+        }
         call.enqueue(new Callback<List<TaskModel>>() {
             @Override
             public void onResponse(Call<List<TaskModel>> call, Response<List<TaskModel>> response) {
@@ -102,6 +123,11 @@ public class TaskRepository extends BaseRepository {
     }
 
     public void load(int id, final APIListener<TaskModel> listener) {
+        /* Verifica se existe conexão com a internet */
+        if(!super.isConnectionAvailable()) {
+            listener.onFailure(mContext.getString(R.string.ERROR_INTERNET_CONNECTION));
+            return;
+        }
         final Call<TaskModel> call = this.mTaskservice.load(id);
         call.enqueue(new Callback<TaskModel>() {
             @Override
@@ -119,6 +145,5 @@ public class TaskRepository extends BaseRepository {
             }
         });
     }
-
 
 }

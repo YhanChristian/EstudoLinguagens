@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.example.tasks.service.constants.TaskConstants;
 import com.example.tasks.service.listener.APIListener;
@@ -27,12 +26,16 @@ public class TaskListViewModel extends AndroidViewModel {
     private MutableLiveData<Feedback> mFeedback = new MutableLiveData<>();
     public LiveData<Feedback> feedback = this.mFeedback;
 
+    private int mTaskFilter = TaskConstants.TASKFILTER.NO_FILTER;
+
     public TaskListViewModel(@NonNull Application application) {
         super(application);
         this.mTaskRepository = new TaskRepository(application);
     }
 
     public void list(int filter) {
+
+        this.mTaskFilter = filter;
 
         APIListener<List<TaskModel>> listener = new APIListener<List<TaskModel>>() {
             @Override
@@ -67,6 +70,7 @@ public class TaskListViewModel extends AndroidViewModel {
         this.mTaskRepository.delete(id, new APIListener<Boolean>() {
             @Override
             public void onSuccess(Boolean result) {
+                list(mTaskFilter);
                 mFeedback.setValue(new Feedback());
             }
 
@@ -75,5 +79,24 @@ public class TaskListViewModel extends AndroidViewModel {
                 mFeedback.setValue(new Feedback(message));
             }
         });
+    }
+
+    public void updateStatus(int id, boolean isComplete) {
+        APIListener<Boolean> listener = new APIListener<Boolean>() {
+            @Override
+            public void onSuccess(Boolean result) {
+                list(mTaskFilter);
+            }
+            @Override
+            public void onFailure(String message) {
+                mFeedback.setValue(new Feedback(message));
+            }
+        };
+
+        if(isComplete) {
+            mTaskRepository.complete(id, listener);
+        } else {
+            mTaskRepository.undo(id, listener);
+        }
     }
 }

@@ -25,4 +25,5 @@ public class SecurityPreferences {
         public void removeStoredString(String key) {
             this.mSharedPreferences.edit().remove(key).apply();
         }
+
 }

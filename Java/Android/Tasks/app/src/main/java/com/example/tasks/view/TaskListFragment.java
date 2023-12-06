@@ -60,10 +60,12 @@ public class TaskListFragment extends Fragment {
 
             @Override
             public void onCompleteClick(int id) {
+                mViewModel.updateStatus(id, TaskConstants.TASKSTATUS.COMPLETE);
             }
 
             @Override
             public void onUndoClick(int id) {
+                mViewModel.updateStatus(id, TaskConstants.TASKSTATUS.INCOMPLETE);
             }
         };
         // Atribui o tratamento de eventos

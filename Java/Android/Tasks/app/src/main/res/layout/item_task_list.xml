@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="4dp"
-        android:text="@string/descricao"
+        android:text="Descrição"
         app:layout_constraintLeft_toRightOf="@id/image_complete"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="4dp"
-        android:text="@string/prioridade"
+        android:text="Prioridade"
         app:layout_constraintLeft_toRightOf="@id/image_complete"
         app:layout_constraintTop_toBottomOf="@id/text_description" />
 

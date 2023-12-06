@@ -31,4 +31,9 @@ public class TaskConstants {
         public static final String TASKFILTER = "taskfilter";
     }
 
+    public static class TASKSTATUS {
+        public static final boolean COMPLETE = true;
+        public static final boolean INCOMPLETE = false;
+    }
+
 }

@@ -30,6 +30,11 @@ public class PersonRepository extends BaseRepository {
     }
 
     public void createUser(String name, String email, String password, final APIListener<PersonModel> listener) {
+        /* Verifica se existe conexão com a internet */
+        if(!super.isConnectionAvailable()) {
+            listener.onFailure(mContext.getString(R.string.ERROR_INTERNET_CONNECTION));
+            return;
+        }
         Call<PersonModel> call = this.mPersonService.createUser(name, email, password, true);
         call.enqueue(new Callback<PersonModel>() {
             @Override
@@ -49,6 +54,11 @@ public class PersonRepository extends BaseRepository {
     }
 
     public void login(String email, String password, final APIListener<PersonModel> listener) {
+        /* Verifica se existe conexão com a internet */
+        if(!super.isConnectionAvailable()) {
+            listener.onFailure(mContext.getString(R.string.ERROR_INTERNET_CONNECTION));
+            return;
+        }
         Call<PersonModel> call = this.mPersonService.login(email, password);
         call.enqueue(new Callback<PersonModel>() {
             @Override
@@ -80,5 +90,11 @@ public class PersonRepository extends BaseRepository {
                 this.mSecurityPreferences.getStoredString(TaskConstants.SHARED.PERSON_KEY),
                 this.mSecurityPreferences.getStoredString(TaskConstants.SHARED.PERSON_NAME));
 
+    }
+
+    public void logout() {
+        this.mSecurityPreferences.removeStoredString(TaskConstants.SHARED.TOKEN_KEY);
+        this.mSecurityPreferences.removeStoredString(TaskConstants.SHARED.PERSON_KEY);
+        this.mSecurityPreferences.removeStoredString(TaskConstants.SHARED.PERSON_NAME);
     }
 }

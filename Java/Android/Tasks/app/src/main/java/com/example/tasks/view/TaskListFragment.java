@@ -1,5 +1,6 @@
 package com.example.tasks.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +46,11 @@ public class TaskListFragment extends Fragment {
         this.mListener = new TaskListener() {
             @Override
             public void onListClick(int id) {
+                Intent intent = new Intent(getContext(), TaskActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt(TaskConstants.BUNDLE.TASKID, id);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
 
             @Override
@@ -59,13 +65,15 @@ public class TaskListFragment extends Fragment {
             public void onUndoClick(int id) {
             }
         };
+        // Atribui o tratamento de eventos
+        this.mAdapter.attachListener(this.mListener);
 
         // Cria os observadores
         this.loadObservers();
 
         Bundle bundle = getArguments();
 
-        if(bundle != null) {
+        if (bundle != null) {
             this.mFilter = bundle.getInt(TaskConstants.TASKFILTER.KEY);
         }
 
@@ -88,7 +96,7 @@ public class TaskListFragment extends Fragment {
         this.mViewModel.feedback.observe(getViewLifecycleOwner(), new Observer<Feedback>() {
             @Override
             public void onChanged(Feedback feedback) {
-                if(!feedback.isSuccess()) {
+                if (!feedback.isSuccess()) {
                     toast(feedback.getMessage());
                 }
             }

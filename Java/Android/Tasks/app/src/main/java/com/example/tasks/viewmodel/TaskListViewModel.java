@@ -40,13 +40,13 @@ public class TaskListViewModel extends AndroidViewModel {
                 mList.setValue(result);
 
             }
-
             @Override
             public void onFailure(String message) {
                 mList.setValue(new ArrayList<TaskModel>());
                 mFeedback.setValue(new Feedback(message));
             }
         };
+
         /* Retorna a lista de tarefas */
         switch (filter) {
             case TaskConstants.TASKFILTER.NO_FILTER:

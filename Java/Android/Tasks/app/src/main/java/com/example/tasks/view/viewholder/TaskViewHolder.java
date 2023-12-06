@@ -38,7 +38,7 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
     /**
      * Atribui valores aos elementos de interface e também eventos
      */
-    public void bindData(TaskModel taskModel) {
+    public void bindData(final TaskModel taskModel) {
         this.mTextDescription.setText(taskModel.getmDescription());
         try {
             Date date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(taskModel.getmDueDate());
@@ -53,6 +53,12 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
 
         this.mImageComplete.setImageResource(taskModel.getmComplete() ? R.drawable.ic_done : R.drawable.ic_todo);
 
+        this.mTextDescription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onListClick(taskModel.getmId());
+            }
+        });
 
         /*
         new AlertDialog.Builder(itemView.getContext())

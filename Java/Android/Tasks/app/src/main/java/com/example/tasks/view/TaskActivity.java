@@ -20,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.tasks.R;
+import com.example.tasks.service.constants.TaskConstants;
 import com.example.tasks.service.listener.Feedback;
 import com.example.tasks.service.model.PriorityModel;
 import com.example.tasks.service.model.TaskModel;
@@ -28,6 +29,7 @@ import com.example.tasks.viewmodel.TaskViewModel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -37,6 +39,8 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
     private ViewHolder mViewHolder = new ViewHolder();
     private TaskViewModel mViewModel;
     private List<Integer> mListPriorityId = new ArrayList<>();
+
+    private int mTaskId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +70,8 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
 
         // Carrega dados
         this.mViewModel.getList();
+
+        this.loadDataFromActivity();
     }
 
     @Override
@@ -80,7 +86,6 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
             this.handleSave();
         }
     }
-
 
 
     @Override
@@ -110,6 +115,7 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
 
     private void handleSave() {
         TaskModel task = new TaskModel();
+        task.setmId(this.mTaskId);
         task.setmDescription(this.mViewHolder.editDescription.getText().toString());
         task.setmComplete(this.mViewHolder.checkComplete.isChecked());
         task.setmDueDate(this.mViewHolder.buttonDate.getText().toString());
@@ -118,6 +124,14 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
         this.mViewModel.save(task);
     }
 
+    private void loadDataFromActivity() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            this.mTaskId = bundle.getInt(TaskConstants.BUNDLE.TASKID);
+            this.mViewModel.load(this.mTaskId);
+            mViewHolder.buttonSave.setText(this.getString(R.string.update_task));
+        }
+    }
 
     /**
      * Observadores
@@ -130,15 +144,49 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        this.mViewModel.taskSave.observe(this, new Observer<Feedback>() {
+        this.mViewModel.taskFeedback.observe(this, new Observer<Feedback>() {
             @Override
             public void onChanged(Feedback feedback) {
                 if (feedback.isSuccess()) {
+                    if(mTaskId == 0) {
+                        toast(getApplicationContext().getString(R.string.task_created));
+                    } else {
+                        toast(getApplicationContext().getString(R.string.task_updated));
+                    }
+                    finish();
                 } else {
-                    Toast.makeText(getApplicationContext(), feedback.getMessage(), Toast.LENGTH_SHORT).show();
+                    toast(feedback.getMessage());
                 }
             }
         });
+
+        this.mViewModel.task.observe(this, new Observer<TaskModel>() {
+            @Override
+            public void onChanged(TaskModel taskModel) {
+                mViewHolder.editDescription.setText(taskModel.getmDescription());
+                mViewHolder.checkComplete.setChecked(taskModel.getmComplete());
+                try {
+                    Date date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(taskModel.getmDueDate());
+                    mViewHolder.buttonSave.setText(mFormat.format(date));
+                } catch (Exception e) {
+                    mViewHolder.buttonDate.setText("--/--/----");
+                }
+
+                int index = mListPriorityId.indexOf(getIndex(taskModel.getmPriorityId()));
+                mViewHolder.spinnerPriority.setSelection(index);
+            }
+        });
+    }
+
+    private int getIndex(int priorityId) {
+        int index = 0;
+        for (int i = 0; i < this.mListPriorityId.size(); i++) {
+            if (this.mListPriorityId.get(i) == priorityId) {
+                index = i;
+                break;
+            }
+        }
+        return index;
     }
 
     private void loadSpinner(List<PriorityModel> list) {
@@ -156,6 +204,9 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
         this.mViewHolder.buttonSave.setOnClickListener(this);
     }
 
+    private void toast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
 
     /**
      * ViewHolder

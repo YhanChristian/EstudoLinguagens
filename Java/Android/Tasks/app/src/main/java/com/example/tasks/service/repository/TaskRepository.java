@@ -17,18 +17,13 @@ import retrofit2.Response;
 
 public class TaskRepository extends BaseRepository {
     private TaskService mTaskservice;
+
     public TaskRepository(Context context) {
         super(context);
         this.mTaskservice = RetrofitClient.createService(TaskService.class);
     }
 
-public void save(TaskModel taskModel, final APIListener<Boolean> listener) {
-        Call<Boolean> call = mTaskservice.create(
-                taskModel.getmPriorityId(),
-                taskModel.getmDescription(),
-                taskModel.getmDueDate(),
-                taskModel.getmComplete()
-        );
+    private void save(Call<Boolean> call, final APIListener<Boolean> listener) {
         call.enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
@@ -44,13 +39,35 @@ public void save(TaskModel taskModel, final APIListener<Boolean> listener) {
                 listener.onFailure(mContext.getString(R.string.ERROR_UNEXPECTED));
             }
         });
+
+    }
+
+    public void create(TaskModel taskModel, final APIListener<Boolean> listener) {
+        Call<Boolean> call = mTaskservice.create(
+                taskModel.getmPriorityId(),
+                taskModel.getmDescription(),
+                taskModel.getmDueDate(),
+                taskModel.getmComplete()
+        );
+        this.save(call, listener);
+    }
+
+    public void update(TaskModel task, final APIListener<Boolean> listener) {
+        Call<Boolean> call = this.mTaskservice.update(
+                task.getmId(),
+                task.getmPriorityId(),
+                task.getmDescription(),
+                task.getmDueDate(),
+                task.getmComplete()
+        );
+        this.save(call, listener);
     }
 
     private void list(Call<List<TaskModel>> call, final APIListener<List<TaskModel>> listener) {
         call.enqueue(new Callback<List<TaskModel>>() {
             @Override
             public void onResponse(Call<List<TaskModel>> call, Response<List<TaskModel>> response) {
-                if(response.code() == TaskConstants.HTTP.SUCCESS) {
+                if (response.code() == TaskConstants.HTTP.SUCCESS) {
                     listener.onSuccess(response.body());
                 } else {
                     listener.onFailure(handleFailure(response.errorBody()));
@@ -77,5 +94,24 @@ public void save(TaskModel taskModel, final APIListener<Boolean> listener) {
     public void overdue(final APIListener<List<TaskModel>> listener) {
         Call<List<TaskModel>> call = this.mTaskservice.overdue();
         this.list(call, listener);
+    }
+
+    public void load(int id, final APIListener<TaskModel> listener) {
+        final Call<TaskModel> call = this.mTaskservice.load(id);
+        call.enqueue(new Callback<TaskModel>() {
+            @Override
+            public void onResponse(Call<TaskModel> call, Response<TaskModel> response) {
+                if (response.code() == TaskConstants.HTTP.SUCCESS) {
+                    listener.onSuccess(response.body());
+                } else {
+                    listener.onFailure(handleFailure(response.errorBody()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TaskModel> call, Throwable t) {
+                listener.onFailure(mContext.getString(R.string.ERROR_UNEXPECTED));
+            }
+        });
     }
 }

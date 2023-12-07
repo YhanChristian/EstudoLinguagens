@@ -8,24 +8,29 @@ import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "priority")
 public class PriorityModel {
-    @SerializedName("id")
+
+    @SerializedName("Id")
     @ColumnInfo(name = "id")
     @PrimaryKey
-    private int mId;
+    private int id;
+
     @SerializedName("Description")
     @ColumnInfo(name = "description")
-    private String mDescription;
+    private String description;
+
+    public int getId() {
+        return id;
+    }
 
     public void setId(int id) {
-        this.mId = id;
+        this.id = id;
     }
-    public int getId() {
-        return this.mId;
-    }
-    public void setDescription(String description) {
-        this.mDescription = description;
-    }
+
     public String getDescription() {
-        return this.mDescription;
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

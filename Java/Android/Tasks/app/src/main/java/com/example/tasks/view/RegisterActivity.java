@@ -1,12 +1,13 @@
 package com.example.tasks.view;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,10 +19,9 @@ import com.example.tasks.viewmodel.RegisterViewModel;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private final ViewHolder mViewHolder = new ViewHolder();
+    private ViewHolder mViewHolder = new ViewHolder();
     private RegisterViewModel mRegisterViewModel;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +32,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        //Mapeia elementos layout
         this.mViewHolder.editName = findViewById(R.id.edit_name);
         this.mViewHolder.editEmail = findViewById(R.id.edit_email);
         this.mViewHolder.editPassword = findViewById(R.id.edit_password);
@@ -50,19 +49,26 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         int id = v.getId();
-
-        /* Trata evento button create */
         if (id == R.id.button_create) {
+
             String name = this.mViewHolder.editName.getText().toString();
             String email = this.mViewHolder.editEmail.getText().toString();
             String password = this.mViewHolder.editPassword.getText().toString();
 
-            this.mRegisterViewModel.createUser(name, email, password);
+            this.mRegisterViewModel.create(name, email, password);
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void loadObservers() {
-        this.mRegisterViewModel.createUser.observe(this, new Observer<Feedback>() {
+        this.mRegisterViewModel.create.observe(this, new Observer<Feedback>() {
             @Override
             public void onChanged(Feedback feedback) {
                 if (feedback.isSuccess()) {
@@ -76,7 +82,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         });
     }
 
-
     /**
      * ViewHolder
      */
@@ -86,4 +91,5 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         EditText editPassword;
         Button buttonCreate;
     }
+
 }

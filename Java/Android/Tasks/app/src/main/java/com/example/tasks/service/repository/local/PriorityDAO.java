@@ -10,6 +10,7 @@ import java.util.List;
 
 @Dao
 public interface PriorityDAO {
+
     @Insert
     void save(List<PriorityModel> list);
 
@@ -19,6 +20,7 @@ public interface PriorityDAO {
     @Query("SELECT description FROM priority WHERE id = :id")
     String getDescription(int id);
 
-    @Query("DELETE FROM priority WHERE id > 0")
+    @Query("DELETE FROM priority")
     void clear();
+
 }

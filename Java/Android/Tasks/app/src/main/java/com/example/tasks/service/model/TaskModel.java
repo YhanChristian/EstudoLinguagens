@@ -3,54 +3,59 @@ package com.example.tasks.service.model;
 import com.google.gson.annotations.SerializedName;
 
 public class TaskModel {
-    @SerializedName("id")
-    private int mId;
+
+    @SerializedName("Id")
+    private int id;
+
     @SerializedName("PriorityId")
-    private int mPriorityId;
+    private int priorityId;
+
     @SerializedName("Description")
-    private String mDescription;
+    private String description;
+
     @SerializedName("DueDate")
-    private String mDueDate;
+    private String dueDate;
+
     @SerializedName("Complete")
-    private Boolean mComplete;
+    private Boolean complete;
 
-    public int getmId() {
-        return mId;
+    public int getId() {
+        return id;
     }
 
-    public void setmId(int mId) {
-        this.mId = mId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getmPriorityId() {
-        return mPriorityId;
+    public int getPriorityId() {
+        return priorityId;
     }
 
-    public void setmPriorityId(int mPriorityId) {
-        this.mPriorityId = mPriorityId;
+    public void setPriorityId(int priorityId) {
+        this.priorityId = priorityId;
     }
 
-    public String getmDescription() {
-        return mDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setmDescription(String mDescription) {
-        this.mDescription = mDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getmDueDate() {
-        return mDueDate;
+    public String getDueDate() {
+        return dueDate;
     }
 
-    public void setmDueDate(String mDueDate) {
-        this.mDueDate = mDueDate;
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
     }
 
-    public Boolean getmComplete() {
-        return mComplete;
+    public Boolean getComplete() {
+        return complete;
     }
 
-    public void setmComplete(Boolean mComplete) {
-        this.mComplete = mComplete;
+    public void setComplete(Boolean complete) {
+        this.complete = complete;
     }
 }

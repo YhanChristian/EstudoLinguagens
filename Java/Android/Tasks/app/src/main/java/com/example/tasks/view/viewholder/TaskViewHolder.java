@@ -2,6 +2,7 @@ package com.example.tasks.view.viewholder;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import com.example.tasks.service.listener.TaskListener;
 import com.example.tasks.service.model.TaskModel;
 import com.example.tasks.service.repository.PriorityRepository;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -21,14 +23,12 @@ import java.util.Locale;
 public class TaskViewHolder extends RecyclerView.ViewHolder {
 
     private PriorityRepository mPriorityRepository;
-
     private SimpleDateFormat mDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     private TaskListener mListener;
 
     private ImageView mImageComplete = itemView.findViewById(R.id.image_complete);
     private TextView mTextDescription = itemView.findViewById(R.id.text_description);
     private TextView mTextPriority = itemView.findViewById(R.id.text_priority);
-
     private TextView mTextDueDate = itemView.findViewById(R.id.text_duedate);
 
     public TaskViewHolder(@NonNull View itemView, TaskListener listener) {
@@ -40,25 +40,32 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
     /**
      * Atribui valores aos elementos de interface e também eventos
      */
-    public void bindData(final TaskModel taskModel) {
-        this.mTextDescription.setText(taskModel.getmDescription());
+    public void bindData(final TaskModel task) {
+
+        this.mTextDescription.setText(task.getDescription());
+
         try {
-            Date date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(taskModel.getmDueDate());
-            this.mTextDueDate.setText(mDateFormat.format(date));
-        } catch (Exception e) {
-            this.mTextDueDate.setText("--/--/----");
+            Date date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(task.getDueDate());
+            this.mTextDueDate.setText(this.mDateFormat.format(date));
+        } catch (ParseException e) {
+            this.mTextDueDate.setText("--");
         }
 
-        String priorityDescription = this.mPriorityRepository.getDescription(taskModel.getmPriorityId());
+        String priority = this.mPriorityRepository.getDescription(task.getPriorityId());
+        this.mTextPriority.setText(priority);
 
-        this.mTextPriority.setText(priorityDescription);
-
-        this.mImageComplete.setImageResource(taskModel.getmComplete() ? R.drawable.ic_done : R.drawable.ic_todo);
+        if (task.getComplete()) {
+            this.mImageComplete.setImageResource(R.drawable.ic_done);
+            this.mTextDescription.setTextColor(Color.GRAY);
+        } else {
+            this.mImageComplete.setImageResource(R.drawable.ic_todo);
+            this.mTextDescription.setTextColor(Color.BLACK);
+        }
 
         this.mTextDescription.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onListClick(taskModel.getmId());
+                mListener.onListClick(task.getId());
             }
         });
 
@@ -71,7 +78,7 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
                         .setPositiveButton(R.string.sim, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mListener.onDeleteClick(taskModel.getmId());
+                                mListener.onDeleteClick(task.getId());
                             }
                         })
                         .setNeutralButton(R.string.cancelar, null).show();
@@ -82,12 +89,13 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
         this.mImageComplete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (taskModel.getmComplete()) {
-                    mListener.onUndoClick(taskModel.getmId());
+                if (task.getComplete()) {
+                    mListener.onUndoClick(task.getId());
                 } else {
-                    mListener.onCompleteClick(taskModel.getmId());
+                    mListener.onCompleteClick(task.getId());
                 }
             }
         });
     }
+
 }

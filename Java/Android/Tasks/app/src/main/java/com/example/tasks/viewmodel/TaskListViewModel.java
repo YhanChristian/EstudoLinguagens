@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.example.tasks.service.constants.TaskConstants;
 import com.example.tasks.service.listener.APIListener;
@@ -19,6 +20,7 @@ import java.util.List;
 public class TaskListViewModel extends AndroidViewModel {
 
     private TaskRepository mTaskRepository;
+    private int mFilter = 0;
 
     private MutableLiveData<List<TaskModel>> mList = new MutableLiveData<>();
     public LiveData<List<TaskModel>> list = this.mList;
@@ -26,22 +28,17 @@ public class TaskListViewModel extends AndroidViewModel {
     private MutableLiveData<Feedback> mFeedback = new MutableLiveData<>();
     public LiveData<Feedback> feedback = this.mFeedback;
 
-    private int mTaskFilter = TaskConstants.TASKFILTER.NO_FILTER;
-
     public TaskListViewModel(@NonNull Application application) {
         super(application);
         this.mTaskRepository = new TaskRepository(application);
     }
 
     public void list(int filter) {
-
-        this.mTaskFilter = filter;
-
+        this.mFilter = filter;
         APIListener<List<TaskModel>> listener = new APIListener<List<TaskModel>>() {
             @Override
             public void onSuccess(List<TaskModel> result) {
                 mList.setValue(result);
-
             }
 
             @Override
@@ -51,18 +48,32 @@ public class TaskListViewModel extends AndroidViewModel {
             }
         };
 
-        /* Retorna a lista de tarefas */
-        switch (filter) {
-            case TaskConstants.TASKFILTER.NO_FILTER:
-            default:
-                this.mTaskRepository.all(listener);
-                break;
-            case TaskConstants.TASKFILTER.NEXT_7_DAYS:
-                this.mTaskRepository.nextWeek(listener);
-                break;
-            case TaskConstants.TASKFILTER.OVERDUE:
-                this.mTaskRepository.overdue(listener);
-                break;
+        if (filter == TaskConstants.TASKFILTER.NO_FILTER) {
+            this.mTaskRepository.all(listener);
+        } else if (filter == TaskConstants.TASKFILTER.NEXT_7_DAYS) {
+            this.mTaskRepository.nextWeek(listener);
+        } else {
+            this.mTaskRepository.overdue(listener);
+        }
+    }
+
+    public void updateStatus(int id, boolean complete) {
+        APIListener<Boolean> listener = new APIListener<Boolean>() {
+            @Override
+            public void onSuccess(Boolean result) {
+                list(mFilter);
+            }
+
+            @Override
+            public void onFailure(String message) {
+                mFeedback.setValue(new Feedback(message));
+            }
+        };
+
+        if (complete) {
+            this.mTaskRepository.complete(id, listener);
+        } else {
+            this.mTaskRepository.undo(id, listener);
         }
     }
 
@@ -70,7 +81,7 @@ public class TaskListViewModel extends AndroidViewModel {
         this.mTaskRepository.delete(id, new APIListener<Boolean>() {
             @Override
             public void onSuccess(Boolean result) {
-                list(mTaskFilter);
+                list(mFilter);
                 mFeedback.setValue(new Feedback());
             }
 
@@ -81,22 +92,4 @@ public class TaskListViewModel extends AndroidViewModel {
         });
     }
 
-    public void updateStatus(int id, boolean isComplete) {
-        APIListener<Boolean> listener = new APIListener<Boolean>() {
-            @Override
-            public void onSuccess(Boolean result) {
-                list(mTaskFilter);
-            }
-            @Override
-            public void onFailure(String message) {
-                mFeedback.setValue(new Feedback(message));
-            }
-        };
-
-        if(isComplete) {
-            mTaskRepository.complete(id, listener);
-        } else {
-            mTaskRepository.undo(id, listener);
-        }
-    }
 }

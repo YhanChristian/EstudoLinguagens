@@ -1,7 +1,5 @@
 package com.example.tasks.service.repository.remote;
 
-import androidx.annotation.NonNull;
-
 import com.example.tasks.service.constants.TaskConstants;
 
 import java.io.IOException;
@@ -14,13 +12,13 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
-    private static final String BASE_URL = "http://devmasterteam.com/CursoAndroidAPI/";
+
+    private static String BASE_URL = "http://devmasterteam.com/CursoAndroidAPI/";
     private static Retrofit retrofit;
     private static String tokenKey = "";
     private static String personKey = "";
 
     private RetrofitClient() {
-
     }
 
     private static Retrofit getRetrofitInstance() {
@@ -36,7 +34,8 @@ public class RetrofitClient {
                 return chain.proceed(req);
             }
         });
-        if(retrofit == null) {
+
+        if (retrofit == null) {
             retrofit = new retrofit2.Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .client(httpClient.build())
@@ -50,8 +49,9 @@ public class RetrofitClient {
         return getRetrofitInstance().create(sClass);
     }
 
-public static void saveHeaders(@NonNull String token, @NonNull String personKey) {
+    public static void saveHeaders(String token, String person) {
         tokenKey = token;
-        personKey = personKey;
+        personKey = person;
     }
+
 }

@@ -14,21 +14,22 @@ import com.example.tasks.service.repository.PersonRepository;
 
 public class RegisterViewModel extends AndroidViewModel {
 
-    public LiveData<Feedback> createUser;
     private PersonRepository mPersonRepository;
+
     private MutableLiveData<Feedback> mCreate = new MutableLiveData<>();
-    public LiveData<Feedback> login = this.mCreate;
+    public LiveData<Feedback> create = this.mCreate;
 
     public RegisterViewModel(@NonNull Application application) {
         super(application);
         this.mPersonRepository = new PersonRepository(application);
     }
 
-    public void createUser(String name, String email, String password) {
-        this.mPersonRepository.createUser(name, email, password, new APIListener<PersonModel>() {
+    public void create(String name, final String email, String password) {
+        this.mPersonRepository.create(name, email, password, new APIListener<PersonModel>() {
             @Override
             public void onSuccess(PersonModel result) {
-                //Salvo os dados de login
+
+                result.setEmail(email);
                 mPersonRepository.saveUserData(result);
                 mCreate.setValue(new Feedback());
             }
@@ -39,4 +40,5 @@ public class RegisterViewModel extends AndroidViewModel {
             }
         });
     }
+
 }

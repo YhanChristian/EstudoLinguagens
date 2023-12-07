@@ -8,6 +8,8 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 
 public interface PriorityService {
+
     @GET("Priority")
     Call<List<PriorityModel>> all();
+
 }

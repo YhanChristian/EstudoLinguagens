@@ -8,22 +8,32 @@ import android.content.SharedPreferences;
  */
 public class SecurityPreferences {
 
-        private final SharedPreferences mSharedPreferences;
+    // Só é instanciado dentro da classe
+    private SharedPreferences mSharedPreferences;
 
-        public SecurityPreferences(Context context) {
-            this.mSharedPreferences = context.getSharedPreferences("TasksShared", Context.MODE_PRIVATE);
-        }
+    public SecurityPreferences(Context context) {
+        this.mSharedPreferences = context.getSharedPreferences("TasksShared", Context.MODE_PRIVATE);
+    }
 
-        public void storeString(String key, String value) {
-            this.mSharedPreferences.edit().putString(key, value).apply();
-        }
+    /**
+     * Salva um valor string baseado em uma chave
+     */
+    public void storeString(String key, String value) {
+        this.mSharedPreferences.edit().putString(key, value).apply();
+    }
 
-        public String getStoredString(String key) {
-            return this.mSharedPreferences.getString(key, "");
-        }
+    /**
+     * Obtém o valor associado a chave
+     */
+    public String getStoredString(String key) {
+        return this.mSharedPreferences.getString(key, "");
+    }
 
-        public void removeStoredString(String key) {
-            this.mSharedPreferences.edit().remove(key).apply();
-        }
+    /**
+     * Remove o valor associado a chave
+     */
+    public void remove(String key) {
+        this.mSharedPreferences.edit().remove(key).apply();
+    }
 
 }

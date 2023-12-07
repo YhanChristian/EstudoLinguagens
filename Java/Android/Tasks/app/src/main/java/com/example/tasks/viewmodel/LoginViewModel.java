@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.tasks.service.helper.FingerprintHelper;
 import com.example.tasks.service.listener.APIListener;
 import com.example.tasks.service.listener.Feedback;
 import com.example.tasks.service.model.PersonModel;
@@ -20,10 +21,12 @@ public class LoginViewModel extends AndroidViewModel {
 
     private PersonRepository mPersonRepository;
     private PriorityRepository mPriorityRepository;
+
     private MutableLiveData<Feedback> mLogin = new MutableLiveData<>();
     public LiveData<Feedback> login = this.mLogin;
-    private MutableLiveData<Boolean> mUserLogged = new MutableLiveData<>();
-    public LiveData<Boolean> userLogged = this.mUserLogged;
+
+    private MutableLiveData<Boolean> mFingerprint = new MutableLiveData<>();
+    public LiveData<Boolean> fingerprint = this.mFingerprint;
 
     public LoginViewModel(@NonNull Application application) {
         super(application);
@@ -31,12 +34,16 @@ public class LoginViewModel extends AndroidViewModel {
         this.mPriorityRepository = new PriorityRepository(application);
     }
 
-    public void login(String email, String password) {
+    public void login(final String email, String password) {
         this.mPersonRepository.login(email, password, new APIListener<PersonModel>() {
             @Override
             public void onSuccess(PersonModel result) {
-                //Salva dados de login e informações do usuário
+
+                // Salvo os dados de login
+                result.setEmail(email);
                 mPersonRepository.saveUserData(result);
+
+                // Informo sucesso
                 mLogin.setValue(new Feedback());
             }
 
@@ -46,18 +53,20 @@ public class LoginViewModel extends AndroidViewModel {
             }
         });
     }
-    public void saveUserData(PersonModel personModel) {
-        this.mPersonRepository.saveUserData(personModel);
-    }
 
-    public void verifyLoggedUser() {
-        PersonModel personModel = this.mPersonRepository.getUserData();
-        Boolean isLogged = !(personModel.getName().isEmpty());
+    public void isFingerprintAvailable() {
+        PersonModel model = this.mPersonRepository.getUserData();
+        boolean everLogged = !"".equals(model.getName());
 
-        //Salva dados de headers
-        this.mPersonRepository.saveUserData(personModel);
+        // Adiciona os headers
+        this.mPersonRepository.saveUserData(model);
 
-        if(!isLogged) {
+        if (FingerprintHelper.isAvailable(getApplication())) {
+            this.mFingerprint.setValue(everLogged);
+        }
+
+        // Usuário não logado
+        if (!everLogged) {
             this.mPriorityRepository.all(new APIListener<List<PriorityModel>>() {
                 @Override
                 public void onSuccess(List<PriorityModel> result) {
@@ -66,10 +75,10 @@ public class LoginViewModel extends AndroidViewModel {
 
                 @Override
                 public void onFailure(String message) {
-                    //Por enquanto n tratar erro
+                    // Erro silencioso
                 }
             });
         }
-        this.mUserLogged.setValue(isLogged);
     }
+
 }

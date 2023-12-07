@@ -11,13 +11,14 @@ public interface PersonService {
 
     @FormUrlEncoded
     @POST("Authentication/Create")
-    Call<PersonModel>  createUser(@Field("name") String name,
-                                  @Field("email") String email,
-                                  @Field("password") String password,
-                                  @Field("receiveNews") Boolean receiveNews);
+    Call<PersonModel> create(
+            @Field("name") String name,
+            @Field("email") String email,
+            @Field("password") String password,
+            @Field("receivenews") Boolean receivenews);
 
     @FormUrlEncoded
     @POST("Authentication/Login")
-    Call<PersonModel>  login(@Field("email") String email,
-                             @Field("password") String password);
+    Call<PersonModel> login(@Field("email") String email, @Field("password") String password);
+
 }

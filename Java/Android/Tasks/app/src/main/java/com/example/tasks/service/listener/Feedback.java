@@ -1,21 +1,31 @@
 package com.example.tasks.service.listener;
 
+/**
+ * Faz a comunicação entre ViewModel e Activities.
+ * Encarregada de passar resposta e mensagem de sucesso ou falha.
+ */
 public class Feedback {
-    private boolean mSuccess = true;
-    private String mMessage = "";
+    private boolean success = true;
+    private String message = "";
 
-    public Feedback() {
+    /**
+     * Construtor vazio - Sucesso, nenhuma mensagem
+     */
+    public Feedback() {}
 
-    }
-
+    /**
+     * Se alguma mensagem é enviada, temos um erro
+     */
     public Feedback(String str) {
-        this.mMessage = str;
-        this.mSuccess = false;
+        this.message = str;
+        success = false;
     }
-    public boolean isSuccess(){
-        return this.mSuccess;
+
+    public boolean isSuccess() {
+        return this.success;
     }
+
     public String getMessage() {
-        return this.mMessage;
+        return this.message;
     }
 }

@@ -12,11 +12,11 @@ public class TaskConstants {
         public static final String TOKEN_KEY = "token";
         public static final String PERSON_KEY = "personkey";
         public static final String PERSON_NAME = "personname";
+        public static final String PERSON_EMAIL = "personemail";
     }
 
     public static class HTTP {
         public static final int SUCCESS = 200;
-        public static final int NOT_FOUND = 404;
     }
 
     public static class TASKFILTER {
@@ -28,12 +28,13 @@ public class TaskConstants {
 
     public static class BUNDLE {
         public static final String TASKID = "taskid";
-        public static final String TASKFILTER = "taskfilter";
     }
 
     public static class TASKSTATUS {
         public static final boolean COMPLETE = true;
         public static final boolean INCOMPLETE = false;
     }
+
+
 
 }

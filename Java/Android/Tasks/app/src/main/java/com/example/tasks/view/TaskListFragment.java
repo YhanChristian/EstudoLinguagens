@@ -9,8 +9,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,8 +29,7 @@ public class TaskListFragment extends Fragment {
     private TaskAdapter mAdapter = new TaskAdapter();
     private TaskListViewModel mViewModel;
     private TaskListener mListener;
-
-    private int mFilter = TaskConstants.TASKFILTER.NO_FILTER;
+    private int mFilter = 0;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_task_list, container, false);
@@ -68,14 +65,12 @@ public class TaskListFragment extends Fragment {
                 mViewModel.updateStatus(id, TaskConstants.TASKSTATUS.INCOMPLETE);
             }
         };
-        // Atribui o tratamento de eventos
         this.mAdapter.attachListener(this.mListener);
 
         // Cria os observadores
         this.loadObservers();
 
         Bundle bundle = getArguments();
-
         if (bundle != null) {
             this.mFilter = bundle.getInt(TaskConstants.TASKFILTER.KEY);
         }
@@ -96,23 +91,14 @@ public class TaskListFragment extends Fragment {
                 mAdapter.updateList(taskModels);
             }
         });
+
         this.mViewModel.feedback.observe(getViewLifecycleOwner(), new Observer<Feedback>() {
             @Override
             public void onChanged(Feedback feedback) {
                 if (!feedback.isSuccess()) {
                     toast(feedback.getMessage());
-                }
-            }
-        });
-
-        this.mViewModel.feedback.observe(getViewLifecycleOwner(), new Observer<Feedback>() {
-            @Override
-            public void onChanged(Feedback feedback) {
-                if (feedback.isSuccess()) {
-                    toast(getString(R.string.task_removed));
-                    mViewModel.list(mFilter);
                 } else {
-                    toast(feedback.getMessage());
+                    toast(getString(R.string.task_removed));
                 }
             }
         });

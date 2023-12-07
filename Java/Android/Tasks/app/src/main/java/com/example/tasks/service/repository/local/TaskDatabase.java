@@ -1,5 +1,6 @@
 package com.example.tasks.service.repository.local;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import androidx.room.Database;
@@ -14,7 +15,7 @@ public abstract class TaskDatabase extends RoomDatabase {
     // Singleton
     private static TaskDatabase INSTANCE;
 
-    //DAO
+    // DAO
     public abstract PriorityDAO priorityDAO();
 
     // Singleton

@@ -1,6 +1,5 @@
 package com.example.tasks.service.repository;
 
-import android.app.Application;
 import android.content.Context;
 
 import com.example.tasks.R;
@@ -19,27 +18,29 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PriorityRepository extends BaseRepository {
+
     private PriorityService mPriorityService;
     private PriorityDAO mPriorityDAO;
 
     public PriorityRepository(Context context) {
         super(context);
-        mPriorityService = RetrofitClient.createService(PriorityService.class);
-        mPriorityDAO = TaskDatabase.getDataBase(context).priorityDAO();
-        mContext = context;
+        this.mContext = context;
+        this.mPriorityService = RetrofitClient.createService(PriorityService.class);
+        this.mPriorityDAO = TaskDatabase.getDataBase(context).priorityDAO();
     }
 
     public void all(final APIListener<List<PriorityModel>> listener) {
-        /* Verifica se existe conexão com a internet */
-        if(!super.isConnectionAvailable()) {
+
+        if (!super.isConnectionAvailable()) {
             listener.onFailure(mContext.getString(R.string.ERROR_INTERNET_CONNECTION));
             return;
         }
+
         Call<List<PriorityModel>> call = this.mPriorityService.all();
         call.enqueue(new Callback<List<PriorityModel>>() {
             @Override
             public void onResponse(Call<List<PriorityModel>> call, Response<List<PriorityModel>> response) {
-                if(response.code() == TaskConstants.HTTP.SUCCESS) {
+                if (response.code() == TaskConstants.HTTP.SUCCESS) {
                     listener.onSuccess(response.body());
                 } else {
                     listener.onFailure(handleFailure(response.errorBody()));
@@ -53,16 +54,17 @@ public class PriorityRepository extends BaseRepository {
         });
     }
 
-    public String getDescription(int id) {
-        return this.mPriorityDAO.getDescription(id);
-    }
-
     public List<PriorityModel> getList() {
         return this.mPriorityDAO.list();
     }
 
-    public void save(List<PriorityModel> result) {
-        this.mPriorityDAO.clear();
-        this.mPriorityDAO.save(result);
+    public String getDescription(int id) {
+        return this.mPriorityDAO.getDescription(id);
     }
+
+    public void save(List<PriorityModel> list) {
+        this.mPriorityDAO.clear();
+        this.mPriorityDAO.save(list);
+    }
+
 }

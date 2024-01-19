@@ -17,7 +17,8 @@
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
         android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:paddingBottom="10dp"
+        tools:ignore="MissingConstraints">
 
         <ImageView
             android:id="@+id/item_img_icon"

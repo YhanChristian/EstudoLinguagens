@@ -6,11 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".register.view.RegisterActivity">
 
-    <fragment
+    <FrameLayout
         android:id="@+id/fragment_register"
         android:layout_width="match_parent"
-        android:name="co.tiagoaguiar.course.instagram.register.view.RegisterPhotoFragment"
-        tools:layout="@layout/fragment_register_photo"
+        tools:layout="@layout/fragment_register_email"
         android:layout_height="match_parent"/>
 
 </LinearLayout>

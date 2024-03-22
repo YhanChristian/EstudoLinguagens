@@ -12,6 +12,7 @@
         android:layout_marginTop="16dp"
         android:layout_gravity="center_horizontal"
         android:indeterminateTint="@color/white"
+        android:backgroundTintMode="src_in"
         android:visibility="gone"
         tools:visibility="visible"
         android:elevation="2dp" />

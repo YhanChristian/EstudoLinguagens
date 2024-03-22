@@ -22,7 +22,8 @@
             android:paddingBottom="70dp"
             android:orientation="vertical">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/image_view_register_photo"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center"
@@ -43,7 +44,7 @@
                 android:layout_gravity="center_horizontal"
                 android:text="@string/photo_register_subtitle"/>
 
-            <co.tiagoaguiar.course.instagram.login.view.LoadingButton
+            <co.tiagoaguiar.course.instagram.commom.view.LoadingButton
                 android:id="@+id/button_register_add_photo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

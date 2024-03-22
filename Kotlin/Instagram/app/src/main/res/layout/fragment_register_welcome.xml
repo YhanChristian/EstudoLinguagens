@@ -23,11 +23,12 @@
             android:paddingBottom="70dp">
 
             <TextView
+                android:id="@+id/text_register_welcome"
                 style="@style/Theme.Instagram.TextViewBase.Form"
                 android:text="@string/welcome_to_instagram" />
 
-            <co.tiagoaguiar.course.instagram.login.view.LoadingButton
-                android:id="@+id/button_email_next"
+            <co.tiagoaguiar.course.instagram.commom.view.LoadingButton
+                android:id="@+id/button_welcome_next"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:text="@string/next" />
@@ -45,6 +46,7 @@
         android:padding="24dp"
         android:text="@string/agree_terms_policy"
         android:textAlignment="center"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

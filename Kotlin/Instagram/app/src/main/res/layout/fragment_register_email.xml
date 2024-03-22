@@ -43,7 +43,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
-            <co.tiagoaguiar.course.instagram.login.view.LoadingButton
+            <co.tiagoaguiar.course.instagram.commom.view.LoadingButton
                 android:id="@+id/button_email_next"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -67,6 +67,7 @@
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
         android:background="@color/white"
+        android:textColor="@color/black"
         android:padding="24dp"
         android:text="@string/already_has_account"
         android:textAlignment="center"

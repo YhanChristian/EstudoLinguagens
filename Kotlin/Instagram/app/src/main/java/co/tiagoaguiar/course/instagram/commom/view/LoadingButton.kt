@@ -1,6 +1,5 @@
-package co.tiagoaguiar.course.instagram.login.view
+package co.tiagoaguiar.course.instagram.commom.view
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater

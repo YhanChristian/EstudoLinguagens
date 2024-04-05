@@ -24,6 +24,7 @@ import co.tiagoaguiar.course.instagram.databinding.FragmentRegisterPhotoBinding
 import co.tiagoaguiar.course.instagram.register.RegisterPhoto
 import co.tiagoaguiar.course.instagram.register.presentation.RegisterPhotoPresenter
 
+@Suppress("DEPRECATION")
 class RegisterPhotoFragment : Fragment(R.layout.fragment_register_photo), RegisterPhoto.View {
 
     private var binding: FragmentRegisterPhotoBinding? = null

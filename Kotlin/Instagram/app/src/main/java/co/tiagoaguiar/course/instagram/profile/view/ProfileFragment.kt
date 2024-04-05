@@ -1,6 +1,5 @@
-package co.tiagoaguiar.course.instagram.home.view
+package co.tiagoaguiar.course.instagram.profile.view
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -11,23 +10,22 @@ import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import co.tiagoaguiar.course.instagram.R
 
-class FragmentHome : Fragment() {
+class ProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val rv = view.findViewById<RecyclerView>(R.id.rv_home)
-        rv.layoutManager = LinearLayoutManager(requireContext())
+        val rv = view.findViewById<RecyclerView>(R.id.rv_profile)
+        rv.layoutManager = GridLayoutManager(requireContext(), 3)
         rv.adapter = PostAdapter()
     }
 
@@ -44,7 +42,7 @@ class FragmentHome : Fragment() {
     private class PostAdapter : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
-            return PostViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_post_list, parent, false))
+            return PostViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_profile_grid, parent, false))
         }
 
         override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
@@ -57,7 +55,7 @@ class FragmentHome : Fragment() {
 
         private class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             fun bind(@DrawableRes image: Int) {
-                itemView.findViewById<ImageView>(R.id.img_home_post).setImageResource(image)
+                itemView.findViewById<ImageView>(R.id.item_profile_img_grid).setImageResource(image)
             }
         }
     }

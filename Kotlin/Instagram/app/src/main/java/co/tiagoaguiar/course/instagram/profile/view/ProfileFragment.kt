@@ -1,62 +1,62 @@
 package co.tiagoaguiar.course.instagram.profile.view
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.annotation.DrawableRes
-import androidx.fragment.app.Fragment
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import co.tiagoaguiar.course.instagram.R
+import co.tiagoaguiar.course.instagram.commom.base.BaseFragment
+import co.tiagoaguiar.course.instagram.commom.model.Post
+import co.tiagoaguiar.course.instagram.commom.model.UserAuth
+import co.tiagoaguiar.course.instagram.databinding.FragmentProfileBinding
+import co.tiagoaguiar.course.instagram.profile.Profile
 
-class ProfileFragment : Fragment() {
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+class ProfileFragment : BaseFragment<FragmentProfileBinding, Profile.Presenter>
+    (R.layout.fragment_profile, FragmentProfileBinding::bind), Profile.View {
+
+    override lateinit var presenter: Profile.Presenter
+    private val adapter = PostAdapter()
+
+    override fun setupViews() {
+        binding?.rvProfile?.layoutManager = GridLayoutManager(requireContext(), 3)
+        binding?.rvProfile?.adapter = adapter
+        presenter.fetchUserProfile()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val rv = view.findViewById<RecyclerView>(R.id.rv_profile)
-        rv.layoutManager = GridLayoutManager(requireContext(), 3)
-        rv.adapter = PostAdapter()
+    override fun setupPresenter() {
+       // TODO("Not yet implemented")
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+    override fun getMenu(): Int {
+        return R.menu.menu_profile
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_profile, menu)
+    override fun showProgress(enabled: Boolean) {
+        binding?.progressProfile?.visibility = if (enabled) View.VISIBLE else View.GONE
     }
 
-    private class PostAdapter : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
-            return PostViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_profile_grid, parent, false))
-        }
-
-        override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
-            holder.bind(R.drawable.ic_insta_add)
-        }
-
-        override fun getItemCount(): Int {
-            return 30
-        }
-
-        private class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            fun bind(@DrawableRes image: Int) {
-                itemView.findViewById<ImageView>(R.id.item_profile_img_grid).setImageResource(image)
-            }
-        }
+    override fun displayUserProfile(userAuth: UserAuth) {
+        binding?.textProfilePostsCount?.text = userAuth.postCount.toString()
+        binding?.textProfileFollowingCount?.text = userAuth.followingCount.toString()
+        binding?.textProfileFollowersCount?.text = userAuth.followerCount.toString()
+        binding?.textProfileUsername?.text = userAuth.name
+        binding?.textProfileUsernameBio?.text = "TODO"
+        presenter.fetchUserPosts()
     }
+
+    override fun displayRequestFailure(msg: String) {
+        Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
+    }
+
+    override fun displayEmptyList() {
+        binding?.textProfileEmpty?.visibility = View.VISIBLE
+        binding?.rvProfile?.visibility = View.GONE
+    }
+
+    override fun displayUserPosts(posts: List<Post>) {
+        binding?.textProfileEmpty?.visibility = View.GONE
+        binding?.rvProfile?.visibility = View.VISIBLE
+        adapter.items = posts
+        adapter.notifyDataSetChanged()
+    }
+
 }

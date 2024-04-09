@@ -1,5 +1,6 @@
 package co.tiagoaguiar.course.instagram.main.view
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
@@ -25,7 +26,8 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     private lateinit var profileFragment : Fragment
     private lateinit var searchFragment : Fragment
     private lateinit var cameraFragment : Fragment
-    private var currentFragment: Fragment? = null
+    private lateinit var currentFragment: Fragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -48,9 +50,18 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         searchFragment = SearchFragment()
         cameraFragment = CameraFragment()
 
-        binding.bottomNavMain.setOnNavigationItemSelectedListener(this)
-        binding.bottomNavMain.selectedItemId = R.id.menu_bottom_home
+        currentFragment = homeFragment
 
+        /*Carrega os fragments na activity*/
+        supportFragmentManager.beginTransaction().apply {
+            add(R.id.fragment_main, homeFragment, "0")
+            add(R.id.fragment_main, profileFragment, "3").hide(profileFragment)
+            add(R.id.fragment_main, searchFragment, "1").hide(searchFragment)
+            add(R.id.fragment_main, cameraFragment, "2").hide(cameraFragment)
+            commit()
+        }
+
+        binding.bottomNavMain.setOnNavigationItemSelectedListener(this)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -58,27 +69,44 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         when(item.itemId) {
             R.id.menu_bottom_home -> {
                 if(currentFragment == homeFragment) return false
+                supportFragmentManager.beginTransaction().apply {
+                    hide(currentFragment)
+                    show(homeFragment)
+                    commit()
+                }
                 currentFragment = homeFragment
             }
             R.id.menu_bottom_profile -> {
                 if(currentFragment == profileFragment) return false
+                supportFragmentManager.beginTransaction().apply {
+                    hide(currentFragment)
+                    show(profileFragment)
+                    commit()
+                }
                 currentFragment = profileFragment
                 scrollToolbarEnabled = true
             }
 
             R.id.menu_bottom_search -> {
                 if(currentFragment == searchFragment) return false
+                supportFragmentManager.beginTransaction().apply {
+                    hide(currentFragment)
+                    show(searchFragment)
+                    commit()
+                }
                 currentFragment = searchFragment
             }
             R.id.menu_bottom_add_photo -> {
                 if(currentFragment == cameraFragment) return false
+                supportFragmentManager.beginTransaction().apply {
+                    hide(currentFragment)
+                    show(cameraFragment)
+                    commit()
+                }
                 currentFragment = cameraFragment
             }
         }
         setScrollToolbarEnabled(scrollToolbarEnabled)
-        currentFragment?.let {
-            replaceFragment(R.id.fragment_main, it)
-        }
         return true
     }
 

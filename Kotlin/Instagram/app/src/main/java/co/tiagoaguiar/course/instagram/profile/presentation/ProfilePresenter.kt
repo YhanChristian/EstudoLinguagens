@@ -1,4 +1,56 @@
 package co.tiagoaguiar.course.instagram.profile.presentation
 
-class ProfilePresenter {
+import co.tiagoaguiar.course.instagram.commom.base.RequestCallback
+import co.tiagoaguiar.course.instagram.commom.model.Database
+import co.tiagoaguiar.course.instagram.commom.model.Post
+import co.tiagoaguiar.course.instagram.commom.model.UserAuth
+import co.tiagoaguiar.course.instagram.profile.Profile
+import co.tiagoaguiar.course.instagram.profile.data.ProfileRepository
+import java.lang.RuntimeException
+
+class ProfilePresenter(
+    private var view: Profile.View?,
+    private val repository: ProfileRepository) : Profile.Presenter {
+    override fun fetchUserProfile() {
+        view?.showProgress(true)
+        val userUUID =  Database.sessionAuth?.uuid ?: throw RuntimeException ("User not logged in")
+        repository.fetchUserProfile(userUUID, object : RequestCallback<UserAuth>{
+            override fun onSuccess(data: UserAuth) {
+                view?.displayUserProfile(data)
+            }
+
+            override fun onFailure(msg: String) {
+                view?.displayRequestFailure(msg)
+            }
+            override fun onComplete() {
+                /*Nada a implementar*/
+            }
+
+        })
+    }
+
+    override fun fetchUserPosts() {
+        val userUUID =  Database.sessionAuth?.uuid ?: throw RuntimeException ("User not logged in")
+        repository.fetchUserPosts(userUUID, object : RequestCallback<List<Post>>{
+            override fun onSuccess(data: List<Post>) {
+                if(data.isEmpty()){
+                    view?.displayEmptyList()
+                } else {
+                    view?.displayUserPosts(data)
+                }
+            }
+
+            override fun onFailure(msg: String) {
+                view?.displayRequestFailure(msg)
+            }
+
+            override fun onComplete() {
+                view?.showProgress(false)
+            }
+        })
+    }
+
+    override fun onDestroy() {
+        view = null
+    }
 }

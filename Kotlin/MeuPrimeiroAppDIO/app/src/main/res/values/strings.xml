@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">MeuPrimeiroAppDio</string>
+    <string name="login_email">Email</string>
+    <string name="login_password">Senha</string>
+    <string name="login_button">Entrar</string>
+    <string name="required">* Obrigatório</string>
+    <string name="login_success">Login realizado com sucesso!</string>
+    <string name="login_failed">Falha ao logar, verifique os campos de login e senha!</string>
+</resources>

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">MyFirstAppDio</string>
+    <string name="login_email">Email</string>
+    <string name="login_password">Password</string>
+    <string name="login_button">Login</string>
+    <string name="required">* Required</string>
+    <string name="login_success">Login successfully!</string>
+    <string name="login_failed">Failed to log in, check the login and password fields!</string>
+</resources>

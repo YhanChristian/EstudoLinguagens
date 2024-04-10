@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Joker App</string>
+    <string name="menu_home">Inicio</string>
+    <string name="menu_joke_day">Piada do Dia</string>
+    <string name="menu_about">Sobre</string>
+    <string name="social">Social</string>
+    <string name="hello_world">Hello, World!</string>
+    <string name="joke_day">Joke Day</string>
+    <string name="about">About</string>
+    <string name="text_example">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras nec posuere nulla. Donec dapibus nulla sed elit lobortis lacinia. Donec pharetra orci eget erat viverra, id viverra ipsum consequat. Praesent porttitor imperdiet suscipit. Nullam ut hendrerit nulla. In posuere lorem vitae justo maximus ultrices. Vivamus nec ligula elit. Fusce condimentum.</string>
+    <string name="app_desc">Carlos Ray "Chuck" Norris (Ryan, 10 de março de 1940) é um artista marcial, ator, produtor de cinema, argumentista estadounidense. Depois de servir na Força Aérea dos Estados Unidos, começou a tornar-se conhecido como praticante de artes marciais. Em 1990, fundou a sua escola de artes marciais, Chun Kuk Do, e em 2005, a World Combat League (WCL), uma competição de combate por equipes.</string>
+    <string name="build_version">Versão (%1$s)</string>
+    <string name="url">https://pt.wikipedia.org/wiki/Chuck_Norris</string>
+</resources>

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">NetflixRemake</string>
+    <string name="hello_world">Hello, World!</string>
+    <string name="cast">Elenco: %1$s</string>
+    <string name="similar">Opções Semelhantes</string>
+    <string name="hello_desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce iaculis eget lacus non tincidunt. Cras laoreet odio in elementum hendrerit.</string>
+    <string name="cast_desc">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</string>
+</resources>

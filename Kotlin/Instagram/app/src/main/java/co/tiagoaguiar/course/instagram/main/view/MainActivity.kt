@@ -1,18 +1,15 @@
 package co.tiagoaguiar.course.instagram.main.view
 
-import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.WindowInsetsController
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import co.tiagoaguiar.course.instagram.R
 import co.tiagoaguiar.course.instagram.camera.view.CameraFragment
-import co.tiagoaguiar.course.instagram.commom.extensions.replaceFragment
 import co.tiagoaguiar.course.instagram.databinding.ActivityMainBinding
 import co.tiagoaguiar.course.instagram.home.view.HomeFragment
 import co.tiagoaguiar.course.instagram.profile.view.ProfileFragment

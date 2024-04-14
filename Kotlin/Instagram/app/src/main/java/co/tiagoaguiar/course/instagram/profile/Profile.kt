@@ -13,7 +13,6 @@ interface Profile {
         fun displayEmptyList()
         fun displayUserPosts(posts: List<Post>)
     }
-
     interface Presenter : BasePresenter {
         fun fetchUserProfile()
         fun fetchUserPosts()

@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import co.tiagoaguiar.course.instagram.R
 import co.tiagoaguiar.course.instagram.camera.view.CameraFragment
+import co.tiagoaguiar.course.instagram.commom.extensions.replaceFragment
 import co.tiagoaguiar.course.instagram.databinding.ActivityMainBinding
 import co.tiagoaguiar.course.instagram.home.view.HomeFragment
 import co.tiagoaguiar.course.instagram.profile.view.ProfileFragment
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     private lateinit var profileFragment : Fragment
     private lateinit var searchFragment : Fragment
     private lateinit var cameraFragment : Fragment
-    private lateinit var currentFragment: Fragment
+    private var currentFragment: Fragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,18 +48,8 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         searchFragment = SearchFragment()
         cameraFragment = CameraFragment()
 
-        currentFragment = homeFragment
-
-        /*Carrega os fragments na activity*/
-        supportFragmentManager.beginTransaction().apply {
-            add(R.id.fragment_main, homeFragment, "0")
-            add(R.id.fragment_main, profileFragment, "3").hide(profileFragment)
-            add(R.id.fragment_main, searchFragment, "1").hide(searchFragment)
-            add(R.id.fragment_main, cameraFragment, "2").hide(cameraFragment)
-            commit()
-        }
-
         binding.bottomNavMain.setOnNavigationItemSelectedListener(this)
+        binding.bottomNavMain.selectedItemId = R.id.menu_bottom_home
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -66,44 +57,27 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         when(item.itemId) {
             R.id.menu_bottom_home -> {
                 if(currentFragment == homeFragment) return false
-                supportFragmentManager.beginTransaction().apply {
-                    hide(currentFragment)
-                    show(homeFragment)
-                    commit()
-                }
                 currentFragment = homeFragment
             }
             R.id.menu_bottom_profile -> {
                 if(currentFragment == profileFragment) return false
-                supportFragmentManager.beginTransaction().apply {
-                    hide(currentFragment)
-                    show(profileFragment)
-                    commit()
-                }
                 currentFragment = profileFragment
                 scrollToolbarEnabled = true
             }
 
             R.id.menu_bottom_search -> {
                 if(currentFragment == searchFragment) return false
-                supportFragmentManager.beginTransaction().apply {
-                    hide(currentFragment)
-                    show(searchFragment)
-                    commit()
-                }
                 currentFragment = searchFragment
             }
             R.id.menu_bottom_add_photo -> {
                 if(currentFragment == cameraFragment) return false
-                supportFragmentManager.beginTransaction().apply {
-                    hide(currentFragment)
-                    show(cameraFragment)
-                    commit()
-                }
                 currentFragment = cameraFragment
             }
         }
         setScrollToolbarEnabled(scrollToolbarEnabled)
+        currentFragment?.let {
+            replaceFragment(R.id.fragment_main, it)
+        }
         return true
     }
 

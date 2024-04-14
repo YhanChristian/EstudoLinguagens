@@ -13,8 +13,7 @@ class ProfilePresenter(
     private val repository: ProfileRepository) : Profile.Presenter {
     override fun fetchUserProfile() {
         view?.showProgress(true)
-        val userUUID =  Database.sessionAuth?.uuid ?: throw RuntimeException ("User not logged in")
-        repository.fetchUserProfile(userUUID, object : RequestCallback<UserAuth>{
+        repository.fetchUserProfile(object : RequestCallback<UserAuth>{
             override fun onSuccess(data: UserAuth) {
                 view?.displayUserProfile(data)
             }
@@ -30,8 +29,7 @@ class ProfilePresenter(
     }
 
     override fun fetchUserPosts() {
-        val userUUID =  Database.sessionAuth?.uuid ?: throw RuntimeException ("User not logged in")
-        repository.fetchUserPosts(userUUID, object : RequestCallback<List<Post>>{
+        repository.fetchUserPosts(object : RequestCallback<List<Post>>{
             override fun onSuccess(data: List<Post>) {
                 if(data.isEmpty()){
                     view?.displayEmptyList()

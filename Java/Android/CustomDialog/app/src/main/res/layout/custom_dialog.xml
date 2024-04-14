@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:background="@color/blue"
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_circle_notification"
+            android:contentDescription="@null"
+            app:tint="@color/white" />
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:paddingVertical="8dp">
+
+        <TextView
+            android:id="@+id/tv_custom_dialog_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/exemplo_de_custom_dialog"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
+
+        <TextView
+            android:layout_marginTop="8dp"
+            android:id="@+id/tv_custom_dialog_msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/texto_de_exemplo_do_alert_dialog"
+            android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+        <Button
+            android:id="@+id/btn_custom_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textAllCaps="true"
+            android:text="@string/fechar"
+            android:textAlignment="center"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/blue"
+            android:background="@color/white"
+            android:layout_gravity="center" />
+
+    </LinearLayout>
+</LinearLayout>

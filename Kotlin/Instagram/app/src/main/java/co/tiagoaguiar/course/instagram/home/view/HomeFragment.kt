@@ -1,38 +1,47 @@
 package co.tiagoaguiar.course.instagram.home.view
 
+import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.annotation.DrawableRes
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import co.tiagoaguiar.course.instagram.R
-import co.tiagoaguiar.course.instagram.commom.base.BaseFragment
-import co.tiagoaguiar.course.instagram.databinding.FragmentHomeBinding
-import co.tiagoaguiar.course.instagram.home.Home
 
-class HomeFragment : BaseFragment<FragmentHomeBinding, Home.Presenter>
-    (R.layout.fragment_home, FragmentHomeBinding::bind) {
+class HomeFragment : Fragment() {
 
-    override lateinit var presenter: Home.Presenter
-    override fun setupViews() {
-        binding?.rvHome?.layoutManager = LinearLayoutManager(requireContext())
-        binding?.rvHome?.adapter = PostAdapter()
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
-    override fun setupPresenter() {
-        //TODO("Not yet implemented")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val rv = view.findViewById<RecyclerView>(R.id.rv_home)
+        rv.layoutManager = LinearLayoutManager(requireContext())
+        rv.adapter = PostAdapter()
     }
 
-    override fun getMenu(): Int {
-        return R.menu.menu_profile
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_profile, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     private class PostAdapter : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
-            return PostViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_post_list, parent, false))
+            return PostViewHolder(
+                LayoutInflater.from(parent.context).inflate(R.layout.item_post_list, parent, false)
+            )
         }
 
         override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
@@ -44,7 +53,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, Home.Presenter>
         }
 
         private class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            fun bind(@DrawableRes image: Int) {
+            fun bind(image: Int) {
                 itemView.findViewById<ImageView>(R.id.img_home_post).setImageResource(image)
             }
         }

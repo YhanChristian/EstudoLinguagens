@@ -1,5 +1,6 @@
 package co.tiagoaguiar.course.instagram.profile.view
 
+import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager

@@ -9,7 +9,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import co.tiagoaguiar.course.instagram.R
-import co.tiagoaguiar.course.instagram.camera.view.CameraFragment
+import co.tiagoaguiar.course.instagram.add.view.AddFragment
+import co.tiagoaguiar.course.instagram.add.view.CameraFragment
 import co.tiagoaguiar.course.instagram.commom.extensions.replaceFragment
 import co.tiagoaguiar.course.instagram.databinding.ActivityMainBinding
 import co.tiagoaguiar.course.instagram.home.view.HomeFragment
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     private lateinit var homeFragment : Fragment
     private lateinit var profileFragment : Fragment
     private lateinit var searchFragment : Fragment
-    private lateinit var cameraFragment : Fragment
+    private lateinit var addFragment : Fragment
     private var currentFragment: Fragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +47,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         homeFragment = HomeFragment()
         profileFragment = ProfileFragment()
         searchFragment = SearchFragment()
-        cameraFragment = CameraFragment()
+        addFragment = AddFragment()
 
         binding.bottomNavMain.setOnNavigationItemSelectedListener(this)
         binding.bottomNavMain.selectedItemId = R.id.menu_bottom_home
@@ -70,8 +71,8 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 currentFragment = searchFragment
             }
             R.id.menu_bottom_add_photo -> {
-                if(currentFragment == cameraFragment) return false
-                currentFragment = cameraFragment
+                if(currentFragment == addFragment) return false
+                currentFragment = addFragment
             }
         }
         setScrollToolbarEnabled(scrollToolbarEnabled)

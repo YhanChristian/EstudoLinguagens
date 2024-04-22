@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TextAppearance.Material3.HeadlineMedium"
+        android:textAlignment="center"
+        android:text="@string/app_name" />
+
+    <Button
+        android:id="@+id/btn_show_custom_dialog"
+        android:layout_marginTop="48dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        android:text="@string/custom_dialog"/>
+
+    <Button
+        android:id="@+id/btm_custom_alert_dialog"
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/btn_show_custom_dialog"
+        android:backgroundTint="@color/yellow"
+        android:text="@string/custom_alert_dialog"/>
+
+
+    <Button
+        android:id="@+id/btn_custom_error_dialog"
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/btm_custom_alert_dialog"
+        android:backgroundTint="@color/red"
+        android:text="@string/custom_error_dialog"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

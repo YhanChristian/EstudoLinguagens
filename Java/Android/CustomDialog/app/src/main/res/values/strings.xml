@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">CustomDialogExample</string>
+    <string name="exemplo_de_custom_dialog">Exemplo de Custom Dialog</string>
+    <string name="texto_de_exemplo_do_alert_dialog">Texto de Exemplo do alert Dialog</string>
+    <string name="fechar">Fechar</string>
+
+    <!--- Exemplos de texto para Custom Dialog -->
+    <string name="custom_dialog">Custom Dialog</string>
+    <string name="custom_dialog_title">Exemplo de título</string>
+    <string name="custom_dialog_msg">Exemplo de mensagem Dialog Customizado</string>
+    <string name="custom_dialog_btn">Clique para fechar</string>
+
+    <!--- Exemplos de texto para Custom Alert Dialog -->
+    <string name="custom_alert_dialog">Custom Alert Dialog</string>
+    <string name="custom_alert_dialog_title">Exemplo de Alerta</string>
+    <string name="custom_alert_dialog_msg">Exemplo de mensagem Dialog Alerta Customizado</string>
+    <string name="custom_alert_dialog_btn">Clique para fechar o Alerta</string>
+
+    <!--- Exemplos de texto para Custom Error Dialog -->
+    <string name="custom_error_dialog">Custom Error Dialog</string>
+    <string name="custom_error_dialog_title">Exemplo de Erro</string>
+    <string name="custom_error_dialog_msg">Exemplo de mensagem Dialog Erro Customizado</string>
+    <string name="custom_error_dialog_btn">Erro Fatal</string>
+
+</resources>

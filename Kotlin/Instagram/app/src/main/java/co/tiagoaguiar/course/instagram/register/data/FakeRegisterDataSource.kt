@@ -27,6 +27,9 @@ class FakeRegisterDataSource : RegisterDataSource {
                     when (Database.usersAuth.add(newUser)) {
                         true -> {
                             Database.sessionAuth = newUser
+                            Database.followers[newUser.uuid] = hashSetOf()
+                            Database.posts[newUser.uuid] = hashSetOf()
+                            Database.feeds[newUser.uuid] = hashSetOf()
                             callback.onSuccess()
                         }
                         else -> callback.onFailure("Erro ao criar o usuário!")

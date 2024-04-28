@@ -15,6 +15,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
@@ -51,6 +52,7 @@ class CameraFragment : Fragment() {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                     val savedUri = Uri.fromFile(photoFile)
                     Log.d(TAG, "onImageSaved: $savedUri")
+                    setFragmentResult(KEY_TAKE_PHOTO, bundleOf(KEY_URI to savedUri))
                 }
 
                 override fun onError(exception: ImageCaptureException) {
@@ -99,5 +101,7 @@ class CameraFragment : Fragment() {
 
     companion object {
         private const val TAG = "CameraFragment"
+        const val KEY_URI = "uri"
+        const val KEY_TAKE_PHOTO = "takePhotoKey"
     }
 }

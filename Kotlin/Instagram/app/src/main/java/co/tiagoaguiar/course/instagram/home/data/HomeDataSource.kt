@@ -7,6 +7,6 @@ import co.tiagoaguiar.course.instagram.commom.model.UserAuth
 interface HomeDataSource {
     fun fetchFeed(userUUID: String, callback: RequestCallback<List<Post>>)
     fun fetchSession() : UserAuth { throw RuntimeException("Not implemented") }
-    fun putFeed(response: List<Post>) { throw RuntimeException("Not implemented") }
+    fun putFeed(response: List<Post>?) { throw RuntimeException("Not implemented") }
 
 }

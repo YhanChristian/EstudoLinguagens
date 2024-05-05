@@ -4,7 +4,6 @@ import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import co.tiagoaguiar.course.instagram.commom.model.Database
-import co.tiagoaguiar.course.instagram.commom.model.Photo
 import co.tiagoaguiar.course.instagram.commom.model.UserAuth
 import java.util.UUID
 
@@ -23,7 +22,7 @@ class FakeRegisterDataSource : RegisterDataSource {
         Handler(Looper.getMainLooper()).postDelayed({
             when (Database.usersAuth.firstOrNull { it.email == email }) {
                 null -> {
-                    val newUser = UserAuth(UUID.randomUUID().toString(), name, email, password)
+                    val newUser = UserAuth(UUID.randomUUID().toString(), name, email, password, null)
                     when (Database.usersAuth.add(newUser)) {
                         true -> {
                             Database.sessionAuth = newUser
@@ -45,11 +44,10 @@ class FakeRegisterDataSource : RegisterDataSource {
         Handler(Looper.getMainLooper()).postDelayed({
             val userAuth = Database.sessionAuth
             if (userAuth != null) {
-                val newPhoto = Photo(userAuth.uuid, photoUri)
-                when (Database.photos.add(newPhoto)) {
-                    true ->  callback.onSuccess()
-                    else -> callback.onFailure("Erro ao atualizar perfil")
-                }
+                val index  = Database.usersAuth.indexOf(userAuth)
+                Database.usersAuth[index] = userAuth.copy(photoUri = photoUri)
+                Database.sessionAuth = Database.usersAuth[index]
+                callback.onSuccess()
             } else {
                 callback.onFailure("Usuário não encontrado")
             }

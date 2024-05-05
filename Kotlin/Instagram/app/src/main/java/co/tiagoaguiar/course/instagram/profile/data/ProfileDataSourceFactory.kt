@@ -1,11 +1,12 @@
 package co.tiagoaguiar.course.instagram.profile.data
 
+import co.tiagoaguiar.course.instagram.commom.base.Cache
 import co.tiagoaguiar.course.instagram.commom.model.Post
 import co.tiagoaguiar.course.instagram.commom.model.UserAuth
 
 class ProfileDataSourceFactory(
-    private val profileCache : ProfileCache<UserAuth>,
-    private val postsCache : ProfileCache<List<Post>>
+    private val profileCache : Cache<UserAuth>,
+    private val postsCache : Cache<List<Post>>
 ) {
     fun createLocalDataSource(): ProfileDataSource {
         return ProfileLocalDataSource(profileCache, postsCache)

@@ -17,7 +17,7 @@ class HomeLocalDataSource(
     override fun fetchSession(): UserAuth {
         return Database.sessionAuth ?: throw RuntimeException("User not logged in")
     }
-    override fun putFeed(response: List<Post>) {
+    override fun putFeed(response: List<Post>?) {
         feedCache.put(response)
     }
 

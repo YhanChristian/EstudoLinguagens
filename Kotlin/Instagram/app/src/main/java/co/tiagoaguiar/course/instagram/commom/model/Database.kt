@@ -1,17 +1,34 @@
 package co.tiagoaguiar.course.instagram.commom.model
 
+import android.net.Uri
+import java.io.File
 import java.util.UUID
-
 object Database {
-    val usersAuth = hashSetOf<UserAuth>()
-    val photos = hashSetOf<Photo>()
+    val usersAuth = mutableListOf<UserAuth>()
     val posts = hashMapOf<String, MutableSet<Post>>()
     val feeds = hashMapOf<String, MutableSet<Post>>()
     val followers = hashMapOf<String, MutableSet<UserAuth>>()
-    var sessionAuth : UserAuth? = null
+    var sessionAuth: UserAuth? = null
+
     init {
-        val userA = UserAuth(UUID.randomUUID().toString(), "Yhan Christian", "yhan.christian@live.com", "12345678")
-        val userB = UserAuth(UUID.randomUUID().toString(), "Camila Costa","camila_braz_costa@outlook.com", "12345678")
+        val userA = UserAuth(
+            UUID.randomUUID().toString(),
+            "Yhan Christian",
+            "yhan.christian@live.com",
+            "12345678",
+            Uri.fromFile(
+                File("/storage/emulated/0/Android/media/co.tiagoaguiar.course.instagram/Instagram/2024-05-04-20-31-42-585.jpg")
+            )
+        )
+        val userB = UserAuth(
+            UUID.randomUUID().toString(),
+            "Camila Costa",
+            "camila_braz_costa@outlook.com",
+            "12345678",
+            Uri.fromFile(
+                File("/storage/emulated/0/Android/media/co.tiagoaguiar.course.instagram/Instagram/2024-05-04-20-31-42-585.jpg")
+            )
+        )
         usersAuth.add(userA)
         usersAuth.add(userB)
 
@@ -23,6 +40,45 @@ object Database {
         posts[userB.uuid] = hashSetOf()
         feeds[userB.uuid] = hashSetOf()
 
-        sessionAuth = usersAuth.first()
+        feeds[userA.uuid]?.addAll(
+            arrayListOf(
+                Post(
+                    UUID.randomUUID().toString(),
+                    Uri.fromFile(
+                        File("/storage/emulated/0/Android/media/co.tiagoaguiar.course.instagram/Instagram/2024-05-04-20-31-42-585.jpg")
+                    ),
+                    "Description 1",
+                    System.currentTimeMillis(), userA
+                ),
+                Post(
+                    UUID.randomUUID().toString(),
+                    Uri.fromFile(
+                        File("/storage/emulated/0/Android/media/co.tiagoaguiar.course.instagram/Instagram/2024-05-04-20-31-42-585.jpg")
+                    ),
+                    "Description 2",
+                    System.currentTimeMillis(), userA
+                ),
+                Post(
+                    UUID.randomUUID().toString(),
+                    Uri.fromFile(
+                        File("/storage/emulated/0/Android/media/co.tiagoaguiar.course.instagram/Instagram/2024-05-04-20-31-42-585.jpg")
+                    ),
+                    "Description 3",
+                    System.currentTimeMillis(), userA
+                ),
+                Post(
+                    UUID.randomUUID().toString(),
+                    Uri.fromFile(
+                        File("/storage/emulated/0/Android/media/co.tiagoaguiar.course.instagram/Instagram/2024-05-04-20-31-42-585.jpg")
+                    ),
+                    "Description 4",
+                    System.currentTimeMillis(), userA
+                ),
+            )
+        )
+        feeds[userA.uuid]?.toList()?.let {
+            feeds[userB.uuid]?.addAll(it)
+        }
+       sessionAuth = usersAuth.first()
     }
 }

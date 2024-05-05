@@ -2,38 +2,33 @@ package co.tiagoaguiar.course.instagram.add.view
 
 
 import android.Manifest
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.TableLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import co.tiagoaguiar.course.instagram.R
-import co.tiagoaguiar.course.instagram.add.Add
-import co.tiagoaguiar.course.instagram.add.presentation.AddPresenter
 import co.tiagoaguiar.course.instagram.add.view.AddActivity.Companion.KEY_PHOTO_URI
 import co.tiagoaguiar.course.instagram.add.view.CameraFragment.Companion.KEY_TAKE_PHOTO
 import co.tiagoaguiar.course.instagram.add.view.CameraFragment.Companion.KEY_URI
-import co.tiagoaguiar.course.instagram.commom.base.BaseFragment
-import co.tiagoaguiar.course.instagram.commom.base.DependencyInjector
 import co.tiagoaguiar.course.instagram.databinding.FragmentAddBinding
-import co.tiagoaguiar.course.instagram.home.presenter.HomePresenter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 class AddFragment : Fragment(R.layout.fragment_add) {
 
     var binding : FragmentAddBinding? = null
-
+    private var addListener: AddListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,8 +37,15 @@ class AddFragment : Fragment(R.layout.fragment_add) {
             uri?.let {
                 val intent = Intent(requireContext(), AddActivity::class.java)
                 intent.putExtra(KEY_PHOTO_URI, uri)
-                startActivity(intent)
+                addActivityResult.launch(intent)
             }
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is AddListener) {
+            addListener = context
         }
     }
 
@@ -82,6 +84,12 @@ class AddFragment : Fragment(R.layout.fragment_add) {
         }
     }
 
+    private val addActivityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            addListener?.onPostCreated()
+        }
+    }
+
     private val getPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
         if (granted) {
             startCamera()
@@ -99,6 +107,10 @@ class AddFragment : Fragment(R.layout.fragment_add) {
             requireContext(),
             REQUIRED_PERMISSION
         ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    interface AddListener {
+        fun onPostCreated()
     }
 
 

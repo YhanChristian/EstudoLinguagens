@@ -9,6 +9,6 @@ interface ProfileDataSource {
     fun fetchUserPosts(userUUID: String, callback: RequestCallback<List<Post>>)
     fun fetchSession() : UserAuth {throw UnsupportedOperationException("Not implemented")}
     fun putUser(response: UserAuth) {throw UnsupportedOperationException("Not implemented")}
-    fun putPosts(response: List<Post>) {throw UnsupportedOperationException("Not implemented")}
+    fun putPosts(response: List<Post>?) {throw UnsupportedOperationException("Not implemented")}
 
 }

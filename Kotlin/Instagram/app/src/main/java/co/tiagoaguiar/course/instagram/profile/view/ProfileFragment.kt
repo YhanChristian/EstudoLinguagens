@@ -1,9 +1,11 @@
 package co.tiagoaguiar.course.instagram.profile.view
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import co.tiagoaguiar.course.instagram.R
 import co.tiagoaguiar.course.instagram.commom.base.BaseFragment
 import co.tiagoaguiar.course.instagram.commom.base.DependencyInjector
@@ -12,9 +14,11 @@ import co.tiagoaguiar.course.instagram.commom.model.UserAuth
 import co.tiagoaguiar.course.instagram.databinding.FragmentProfileBinding
 import co.tiagoaguiar.course.instagram.profile.Profile
 import co.tiagoaguiar.course.instagram.profile.presentation.ProfilePresenter
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding, Profile.Presenter>
-    (R.layout.fragment_profile, FragmentProfileBinding::bind), Profile.View {
+    (R.layout.fragment_profile, FragmentProfileBinding::bind),
+    Profile.View, BottomNavigationView.OnNavigationItemSelectedListener {
 
     override lateinit var presenter: Profile.Presenter
     private val adapter = PostAdapter()
@@ -22,6 +26,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, Profile.Presenter>
     override fun setupViews() {
         binding?.rvProfile?.layoutManager = GridLayoutManager(requireContext(), 3)
         binding?.rvProfile?.adapter = adapter
+        binding?.navProfileTabs?.setOnNavigationItemSelectedListener(this)
         presenter.fetchUserProfile()
     }
 
@@ -62,6 +67,16 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, Profile.Presenter>
         binding?.rvProfile?.visibility = View.VISIBLE
         adapter.items = posts
         adapter.notifyDataSetChanged()
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.menu_profile_grid ->
+                binding?.rvProfile?.layoutManager = GridLayoutManager(requireContext(), 3)
+            R.id.menu_profile_list ->
+                binding?.rvProfile?.layoutManager = LinearLayoutManager(requireContext())
+        }
+        return true
     }
 
 }

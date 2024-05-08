@@ -1,4 +1,4 @@
-package co.tiagoaguiar.course.instagram.add.view
+package co.tiagoaguiar.course.instagram.post.view
 
 
 import android.Manifest
@@ -18,9 +18,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import co.tiagoaguiar.course.instagram.R
+import co.tiagoaguiar.course.instagram.add.view.AddActivity
 import co.tiagoaguiar.course.instagram.add.view.AddActivity.Companion.KEY_PHOTO_URI
-import co.tiagoaguiar.course.instagram.add.view.CameraFragment.Companion.KEY_TAKE_PHOTO
-import co.tiagoaguiar.course.instagram.add.view.CameraFragment.Companion.KEY_URI
+import co.tiagoaguiar.course.instagram.post.view.CameraFragment.Companion.KEY_TAKE_PHOTO
+import co.tiagoaguiar.course.instagram.post.view.CameraFragment.Companion.KEY_URI
 import co.tiagoaguiar.course.instagram.databinding.FragmentAddBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -90,8 +91,8 @@ class AddFragment : Fragment(R.layout.fragment_add) {
         }
     }
 
-    private val getPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-        if (granted) {
+    private val getPermission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { granted ->
+        if (allPermissionsGranted()) {
             startCamera()
         } else {
             Toast.makeText(requireContext(), R.string.permission_camera_denied, Toast.LENGTH_SHORT).show()
@@ -105,7 +106,10 @@ class AddFragment : Fragment(R.layout.fragment_add) {
     private fun allPermissionsGranted(): Boolean {
         return ContextCompat.checkSelfPermission(
             requireContext(),
-            REQUIRED_PERMISSION
+            REQUIRED_PERMISSION[0]
+        ) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
+            requireContext(),
+            REQUIRED_PERMISSION[1]
         ) == PackageManager.PERMISSION_GRANTED
     }
 
@@ -115,7 +119,8 @@ class AddFragment : Fragment(R.layout.fragment_add) {
 
 
     companion object {
-        private const val REQUIRED_PERMISSION =  Manifest.permission.CAMERA
+        private val REQUIRED_PERMISSION = arrayOf(Manifest.permission.CAMERA,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE)
         private const val TAG = "AddFragment"
     }
 }

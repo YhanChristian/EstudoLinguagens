@@ -26,6 +26,7 @@ abstract class BaseFragment<T, P : BasePresenter>
     }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
+        menu.clear()
         getMenu()?.let { inflater.inflate(it, menu) }
     }
 

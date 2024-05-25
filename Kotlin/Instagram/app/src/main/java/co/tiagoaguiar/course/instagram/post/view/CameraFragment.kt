@@ -54,11 +54,9 @@ class CameraFragment : Fragment() {
                     Log.d(TAG, "onImageSaved: $savedUri")
                     setFragmentResult(KEY_TAKE_PHOTO, bundleOf(KEY_URI to savedUri))
                 }
-
                 override fun onError(exception: ImageCaptureException) {
                     Log.e(TAG, "Falha ao salvar imagem: ", exception)
                 }
-
             })
     }
 

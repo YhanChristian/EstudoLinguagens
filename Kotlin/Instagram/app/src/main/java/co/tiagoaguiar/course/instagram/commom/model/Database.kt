@@ -79,6 +79,12 @@ object Database {
         feeds[userA.uuid]?.toList()?.let {
             feeds[userB.uuid]?.addAll(it)
         }
+
+        for(i in 0..30) {
+            val user = UserAuth(UUID.randomUUID().toString(), "User$i", "user$i@gmail.com", "12345678", null)
+            usersAuth.add(user)
+        }
+
        sessionAuth = usersAuth.first()
     }
 }

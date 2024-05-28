@@ -22,27 +22,22 @@ class AddFakeRemoteDataSource : AddDataSource {
                 posts = mutableSetOf()
                 Database.posts[userUUID] = posts
             }
+            val post = Post(UUID.randomUUID().toString(),
+                uri,
+                caption,
+                System.currentTimeMillis(),
+                Database.sessionAuth!!)
+            posts.add(post)
 
             var followers = Database.followers[userUUID]
             if(followers == null) {
                 followers = mutableSetOf()
                 Database.followers[userUUID] = followers
-            }
-
-
-            Database.sessionAuth?.let {
-                val post = Post(UUID.randomUUID().toString(),
-                    uri,
-                    caption,
-                    System.currentTimeMillis(),
-                    it)
-                posts.add(post)
-
-                if(followers.isNotEmpty()) {
-                    for(follower in followers) {
-                        Database.feeds[follower.uuid]?.add(post)
-                    }
+            } else {
+                for(follower in followers) {
+                    Database.feeds[follower]?.add(post)
                 }
+                Database.feeds[userUUID]?.add(post)
             }
             callback.onSuccess(true)
         }, 1000)

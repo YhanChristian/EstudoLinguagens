@@ -14,8 +14,8 @@ interface Profile {
         fun displayUserPosts(posts: List<Post>)
     }
     interface Presenter : BasePresenter {
-        fun fetchUserProfile()
-        fun fetchUserPosts()
+        fun fetchUserProfile(uuid: String?)
+        fun fetchUserPosts(uuid: String?)
         fun clear()
 
     }

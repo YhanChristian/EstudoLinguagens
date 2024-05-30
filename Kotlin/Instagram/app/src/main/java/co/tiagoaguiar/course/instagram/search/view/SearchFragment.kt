@@ -21,7 +21,15 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, Search.Presenter>(
 ), Search.View {
 
     override lateinit var presenter: Search.Presenter
-    private val adapter = SearchAdapter()
+    private val adapter by lazy { SearchAdapter(onItemClicked) }
+    private var searchListener: SearchListener? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is SearchListener) {
+            searchListener = context
+        }
+    }
 
     override fun setupViews() {
         binding?.rvSearch?.layoutManager = LinearLayoutManager(requireContext())
@@ -57,6 +65,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, Search.Presenter>(
             })
         }
     }
+
     override fun showProgress(enabled: Boolean) {
         binding?.progressSearch?.visibility = if (enabled) View.VISIBLE else View.GONE
     }
@@ -71,4 +80,11 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, Search.Presenter>(
         binding?.rvSearch?.visibility = View.GONE
     }
 
+    private val onItemClicked: (String) -> Unit  = { uuid ->
+        searchListener?.goToProfile(uuid)
+    }
+
+    interface SearchListener {
+        fun goToProfile(uuid: String)
+    }
 }

@@ -2,6 +2,7 @@ package co.tiagoaguiar.course.instagram.main.view
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.WindowInsetsController
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +21,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity(),
     BottomNavigationView.OnNavigationItemSelectedListener,
-    AddFragment.AddListener {
+    AddFragment.AddListener, SearchFragment.SearchListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var homeFragment: HomeFragment
     private lateinit var profileFragment: ProfileFragment
@@ -106,5 +107,23 @@ class MainActivity : AppCompatActivity(),
             profileFragment.presenter.clear()
         }
         binding.bottomNavMain.selectedItemId = R.id.menu_bottom_home
+    }
+
+    override fun goToProfile(uuid: String) {
+        Log.d(TAG, "goToProfile: $uuid")
+        val fragment = ProfileFragment().apply{
+            arguments = Bundle().apply{
+                putString(ProfileFragment.KEY_USER_UUID, uuid)
+            }
+        }
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragment_main, fragment, fragment.javaClass.simpleName + "detail")
+            addToBackStack(null)
+            commit()
+        }
+    }
+
+    companion object {
+        private const val TAG = "MainActivity"
     }
 }

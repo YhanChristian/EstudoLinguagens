@@ -8,7 +8,7 @@ import co.tiagoaguiar.course.instagram.commom.model.UserAuth
 interface Profile {
     interface View : BaseView<Presenter> {
         fun showProgress(enabled: Boolean)
-        fun displayUserProfile(userAuth: UserAuth)
+        fun displayUserProfile(userAuth: Pair<UserAuth, Boolean?>)
         fun displayRequestFailure(msg: String)
         fun displayEmptyList()
         fun displayUserPosts(posts: List<Post>)

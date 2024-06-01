@@ -45,13 +45,21 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, Profile.Presenter>
         binding?.progressProfile?.visibility = if (enabled) View.VISIBLE else View.GONE
     }
 
-    override fun displayUserProfile(userAuth: UserAuth) {
-        binding?.textProfilePostsCount?.text = userAuth.postCount.toString()
-        binding?.textProfileFollowingCount?.text = userAuth.followingCount.toString()
-        binding?.textProfileFollowersCount?.text = userAuth.followerCount.toString()
-        binding?.textProfileUsername?.text = userAuth.name
+    override fun displayUserProfile(userAuth: Pair<UserAuth, Boolean?>) {
+        val (user, following) = userAuth
+        binding?.textProfilePostsCount?.text = user.postCount.toString()
+        binding?.textProfileFollowingCount?.text = user.followingCount.toString()
+        binding?.textProfileFollowersCount?.text = user.followerCount.toString()
+        binding?.textProfileUsername?.text = user.name
         binding?.textProfileUsernameBio?.text = "TODO"
-        binding?.imageProfileIcon?.setImageURI(userAuth.photoUri)
+        binding?.imageProfileIcon?.setImageURI(user.photoUri)
+
+        binding?.buttonEditProfile?.text = when (following) {
+            null -> getString(R.string.edit_profile)
+            true -> getString(R.string.unfollow)
+            false -> getString(R.string.follow)
+        }
+
         presenter.fetchUserPosts(uuid)
     }
 

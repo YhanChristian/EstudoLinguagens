@@ -5,10 +5,10 @@ import co.tiagoaguiar.course.instagram.commom.model.Post
 import co.tiagoaguiar.course.instagram.commom.model.UserAuth
 
 interface ProfileDataSource {
-    fun fetchUserProfile(userUUID: String,callback: RequestCallback<UserAuth>)
+    fun fetchUserProfile(userUUID: String,callback: RequestCallback<Pair<UserAuth, Boolean?>>)
     fun fetchUserPosts(userUUID: String, callback: RequestCallback<List<Post>>)
     fun fetchSession() : UserAuth {throw UnsupportedOperationException("Not implemented")}
-    fun putUser(response: UserAuth) {throw UnsupportedOperationException("Not implemented")}
+    fun putUser(response: Pair<UserAuth, Boolean?>) {throw UnsupportedOperationException("Not implemented")}
     fun putPosts(response: List<Post>?) {throw UnsupportedOperationException("Not implemented")}
 
 }

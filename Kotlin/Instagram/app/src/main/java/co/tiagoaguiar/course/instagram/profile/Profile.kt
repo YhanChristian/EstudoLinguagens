@@ -16,6 +16,7 @@ interface Profile {
     interface Presenter : BasePresenter {
         fun fetchUserProfile(uuid: String?)
         fun fetchUserPosts(uuid: String?)
+        fun followUser(uuid: String?, follow: Boolean)
         fun clear()
 
     }

@@ -8,11 +8,14 @@ import co.tiagoaguiar.course.instagram.commom.model.Post
 import co.tiagoaguiar.course.instagram.commom.model.UserAuth
 
 class ProfileFakeRemoteDataSource : ProfileDataSource {
-    override fun fetchUserProfile(userUUID: String, callback: RequestCallback<Pair<UserAuth, Boolean?>>) {
+    override fun fetchUserProfile(
+        userUUID: String,
+        callback: RequestCallback<Pair<UserAuth, Boolean?>>
+    ) {
         Handler(Looper.getMainLooper()).postDelayed({
-            val userAuth = Database.usersAuth.firstOrNull() {userUUID == it.uuid}
-            if(userAuth != null){
-                if(userAuth == Database.sessionAuth){
+            val userAuth = Database.usersAuth.firstOrNull() { userUUID == it.uuid }
+            if (userAuth != null) {
+                if (userAuth == Database.sessionAuth) {
                     callback.onSuccess(Pair(userAuth, null))
                 } else {
                     val followings = Database.followers[Database.sessionAuth!!.uuid]
@@ -35,5 +38,27 @@ class ProfileFakeRemoteDataSource : ProfileDataSource {
             callback.onComplete()
 
         }, 1000)
+    }
+
+    override fun followUser(
+        userUUID: String,
+        isFollow: Boolean,
+        callback: RequestCallback<Boolean>
+    ) {
+        Handler(Looper.getMainLooper()).postDelayed({
+            var followers = Database.followers[Database.sessionAuth!!.uuid]
+
+            if (followers == null) {
+                followers = mutableSetOf()
+                Database.followers[Database.sessionAuth!!.uuid] = followers
+            }
+            if(isFollow){
+                Database.followers[Database.sessionAuth!!.uuid]!!.add(userUUID)
+            } else {
+                Database.followers[Database.sessionAuth!!.uuid]!!.remove(userUUID)
+            }
+            callback.onSuccess(true)
+            callback.onComplete()
+        }, 500)
     }
 }

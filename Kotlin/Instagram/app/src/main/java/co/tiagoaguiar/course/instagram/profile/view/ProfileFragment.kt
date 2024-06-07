@@ -29,11 +29,27 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, Profile.Presenter>
         binding?.rvProfile?.layoutManager = GridLayoutManager(requireContext(), 3)
         binding?.rvProfile?.adapter = adapter
         binding?.navProfileTabs?.setOnNavigationItemSelectedListener(this)
+
+        binding?.buttonEditProfile?.setOnClickListener {
+            val following = binding?.buttonEditProfile?.tag as Boolean?
+            when (following) {
+                true -> {
+                    binding?.buttonEditProfile?.text = getString(R.string.follow)
+                    binding?.buttonEditProfile?.tag = false
+                    presenter.followUser(uuid, false)
+                }
+                false -> {
+                    binding?.buttonEditProfile?.text = getString(R.string.unfollow)
+                    binding?.buttonEditProfile?.tag = true
+                    presenter.followUser(uuid, true)
+                }
+            }
+        }
         presenter.fetchUserProfile(uuid)
     }
 
     override fun setupPresenter() {
-       val repository = DependencyInjector.profileRepository()
+        val repository = DependencyInjector.profileRepository()
         presenter = ProfilePresenter(this, repository)
     }
 
@@ -59,6 +75,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, Profile.Presenter>
             true -> getString(R.string.unfollow)
             false -> getString(R.string.follow)
         }
+        binding?.buttonEditProfile?.tag = following
 
         presenter.fetchUserPosts(uuid)
     }
@@ -80,9 +97,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, Profile.Presenter>
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.menu_profile_grid ->
                 binding?.rvProfile?.layoutManager = GridLayoutManager(requireContext(), 3)
+
             R.id.menu_profile_list ->
                 binding?.rvProfile?.layoutManager = LinearLayoutManager(requireContext())
         }

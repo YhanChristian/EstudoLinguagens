@@ -2,16 +2,15 @@ package co.tiagoaguiar.course.instagram.profile.data
 
 import co.tiagoaguiar.course.instagram.commom.base.Cache
 import co.tiagoaguiar.course.instagram.commom.base.RequestCallback
-import co.tiagoaguiar.course.instagram.commom.model.Database
 import co.tiagoaguiar.course.instagram.commom.model.Post
-import co.tiagoaguiar.course.instagram.commom.model.UserAuth
-import java.lang.RuntimeException
+import co.tiagoaguiar.course.instagram.commom.model.User
+import com.google.firebase.auth.FirebaseAuth
 
 class ProfileLocalDataSource(
-    private val profileCache : Cache<Pair<UserAuth, Boolean?>>,
+    private val profileCache : Cache<Pair<User, Boolean?>>,
     private val postsCache : Cache<List<Post>>
 ) : ProfileDataSource {
-    override fun fetchUserProfile(userUUID: String, callback: RequestCallback<Pair<UserAuth, Boolean?>>) {
+    override fun fetchUserProfile(userUUID: String, callback: RequestCallback<Pair<User, Boolean?>>) {
         val userAuth = profileCache.get(userUUID)
         userAuth?.let { callback.onSuccess(it) } ?: callback.onFailure("Usuario não encontrado")
         callback.onComplete()
@@ -23,11 +22,11 @@ class ProfileLocalDataSource(
         callback.onComplete()
     }
 
-    override fun fetchSession(): UserAuth {
-        return Database.sessionAuth ?: throw RuntimeException("User not logged in")
+    override fun fetchSession(): String {
+        return FirebaseAuth.getInstance().uid ?: throw RuntimeException("User not logged in")
     }
 
-    override fun putUser(response: Pair<UserAuth, Boolean?>) {
+    override fun putUser(response: Pair<User, Boolean?>?) {
         profileCache.put(response)
     }
 

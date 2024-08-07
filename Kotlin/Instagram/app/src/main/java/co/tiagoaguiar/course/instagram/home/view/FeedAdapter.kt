@@ -3,11 +3,11 @@ package co.tiagoaguiar.course.instagram.home.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import co.tiagoaguiar.course.instagram.R
 import co.tiagoaguiar.course.instagram.commom.model.Post
+import com.bumptech.glide.Glide
 
 class FeedAdapter : RecyclerView.Adapter<FeedAdapter.FeedViewHolder>() {
 
@@ -28,10 +28,10 @@ class FeedAdapter : RecyclerView.Adapter<FeedAdapter.FeedViewHolder>() {
 
     class FeedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(post: Post) {
-            itemView.findViewById<ImageView>(R.id.img_home_post).setImageURI(post.uri)
-            itemView.findViewById<ImageView>(R.id.img_home_user).setImageURI(post.publish.photoUri)
+            Glide.with(itemView.context).load(post.photoUrl).into(itemView.findViewById(R.id.img_home_post))
+            Glide.with(itemView.context).load(post.publisher?.photoUrl).into(itemView.findViewById(R.id.img_home_user))
             itemView.findViewById<TextView>(R.id.txt_home_caption).text = post.caption
-            itemView.findViewById<TextView>(R.id.txt_home_user).text = post.publish.name
+            itemView.findViewById<TextView>(R.id.txt_home_user).text = post.publisher?.name
         }
     }
 }

@@ -4,18 +4,11 @@ import android.net.Uri
 import co.tiagoaguiar.course.instagram.commom.base.RequestCallback
 import co.tiagoaguiar.course.instagram.commom.model.Database
 import co.tiagoaguiar.course.instagram.commom.model.UserAuth
+import com.google.firebase.auth.FirebaseAuth
 
 class AddLocalDataSource : AddDataSource {
 
-    override fun fetchSession(): UserAuth {
-        return Database.sessionAuth ?: throw RuntimeException("Usuário não logado!")
-    }
-    override fun createPost(
-        userUUID: String,
-        uri: Uri,
-        caption: String,
-        callback: RequestCallback<Boolean>
-    ) {
-        // TODO("Not yet implemented")
+    override fun fetchSession(): String {
+        return FirebaseAuth.getInstance().uid ?:throw RuntimeException("Usuário não logado!")
     }
 }

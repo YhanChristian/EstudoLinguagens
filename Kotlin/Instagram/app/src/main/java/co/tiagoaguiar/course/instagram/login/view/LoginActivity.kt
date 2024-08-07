@@ -2,19 +2,12 @@ package co.tiagoaguiar.course.instagram.login.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import co.tiagoaguiar.course.instagram.commom.base.DependencyInjector
 import co.tiagoaguiar.course.instagram.commom.util.TxtWatcher
 import co.tiagoaguiar.course.instagram.databinding.ActivityLoginBinding
 import co.tiagoaguiar.course.instagram.login.Login
-import co.tiagoaguiar.course.instagram.login.data.FakeDataSource
-import co.tiagoaguiar.course.instagram.login.data.LoginRepository
 import co.tiagoaguiar.course.instagram.login.presentation.LoginPresenter
 import co.tiagoaguiar.course.instagram.main.view.MainActivity
 import co.tiagoaguiar.course.instagram.register.view.RegisterActivity

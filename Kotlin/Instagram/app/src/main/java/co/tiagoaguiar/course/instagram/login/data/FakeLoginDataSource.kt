@@ -4,7 +4,7 @@ import android.os.Handler
 import android.os.Looper
 import co.tiagoaguiar.course.instagram.commom.model.Database
 
-class FakeDataSource : LoginDataSource {
+class FakeLoginDataSource : LoginDataSource {
 
     override fun login(email: String, password: String, callback: LoginCallback) {
         Handler(Looper.getMainLooper()).postDelayed({

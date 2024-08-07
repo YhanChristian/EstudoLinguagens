@@ -2,7 +2,7 @@ package co.tiagoaguiar.course.instagram.splash.data
 
 import co.tiagoaguiar.course.instagram.commom.model.Database
 
-class FakeLocalDataSource : SplashDataSource {
+class FakeSplashDataSource : SplashDataSource {
     override fun session(callback: SplashCallback) {
         if(Database.sessionAuth != null) {
             callback.onSuccess()

@@ -1,19 +1,24 @@
 package co.tiagoaguiar.course.instagram.profile.view
 
+import android.content.Context
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.tiagoaguiar.course.instagram.R
 import co.tiagoaguiar.course.instagram.commom.base.BaseFragment
 import co.tiagoaguiar.course.instagram.commom.base.DependencyInjector
 import co.tiagoaguiar.course.instagram.commom.model.Post
+import co.tiagoaguiar.course.instagram.commom.model.User
 import co.tiagoaguiar.course.instagram.commom.model.UserAuth
 import co.tiagoaguiar.course.instagram.databinding.FragmentProfileBinding
+import co.tiagoaguiar.course.instagram.main.LogoutListener
 import co.tiagoaguiar.course.instagram.profile.Profile
 import co.tiagoaguiar.course.instagram.profile.presentation.ProfilePresenter
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding, Profile.Presenter>
@@ -23,6 +28,19 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, Profile.Presenter>
     override lateinit var presenter: Profile.Presenter
     private val adapter = PostAdapter()
     private var uuid: String? = null
+    private var logoutListener : LogoutListener? = null
+    private var followListener : Profile.View.FollowListener? = null
+
+
+    override fun onAttach(context: Context) {
+        if(context is LogoutListener) {
+            logoutListener = context
+        }
+        if(context is Profile.View.FollowListener) {
+            followListener = context
+        }
+        super.onAttach(context)
+    }
 
     override fun setupViews() {
         uuid = arguments?.getString(KEY_USER_UUID)
@@ -61,14 +79,16 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, Profile.Presenter>
         binding?.progressProfile?.visibility = if (enabled) View.VISIBLE else View.GONE
     }
 
-    override fun displayUserProfile(userAuth: Pair<UserAuth, Boolean?>) {
+    override fun displayUserProfile(userAuth: Pair<User, Boolean?>) {
         val (user, following) = userAuth
         binding?.textProfilePostsCount?.text = user.postCount.toString()
-        binding?.textProfileFollowingCount?.text = user.followingCount.toString()
-        binding?.textProfileFollowersCount?.text = user.followerCount.toString()
+        binding?.textProfileFollowingCount?.text = user.following.toString()
+        binding?.textProfileFollowersCount?.text = user.followers.toString()
         binding?.textProfileUsername?.text = user.name
         binding?.textProfileUsernameBio?.text = "TODO"
-        binding?.imageProfileIcon?.setImageURI(user.photoUri)
+        binding?.let {
+            Glide.with(requireContext()).load(user.photoUrl).into(it.imageProfileIcon)
+        }
 
         binding?.buttonEditProfile?.text = when (following) {
             null -> getString(R.string.edit_profile)
@@ -96,6 +116,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, Profile.Presenter>
         adapter.notifyDataSetChanged()
     }
 
+    override fun followUpdated() {
+        followListener?.followUpdated()
+    }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_profile_grid ->
@@ -105,6 +129,16 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, Profile.Presenter>
                 binding?.rvProfile?.layoutManager = LinearLayoutManager(requireContext())
         }
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.menu_logout -> {
+                logoutListener?.logout()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     companion object {

@@ -1,14 +1,11 @@
 package co.tiagoaguiar.course.instagram.commom.model
 
-import android.net.Uri
-
-data class UserAuth(
-    val uuid: String,
-    val name: String,
-    val email: String,
-    val password: String,
-    val photoUri: Uri?,
+data class User(
+    val uuid: String?=null,
+    val name: String?=null,
+    val email: String?=null,
+    val photoUrl: String?=null,
     val postCount : Int = 0,
-    val followingCount : Int = 0,
-    val followerCount : Int = 0
+    val followers : Int = 0,
+    val following : Int = 0
 )

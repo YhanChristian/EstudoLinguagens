@@ -3,6 +3,7 @@ package co.tiagoaguiar.course.instagram.profile.presentation
 import co.tiagoaguiar.course.instagram.commom.base.RequestCallback
 import co.tiagoaguiar.course.instagram.commom.model.Database
 import co.tiagoaguiar.course.instagram.commom.model.Post
+import co.tiagoaguiar.course.instagram.commom.model.User
 import co.tiagoaguiar.course.instagram.commom.model.UserAuth
 import co.tiagoaguiar.course.instagram.profile.Profile
 import co.tiagoaguiar.course.instagram.profile.data.ProfileRepository
@@ -13,8 +14,8 @@ class ProfilePresenter(
     private val repository: ProfileRepository) : Profile.Presenter {
     override fun fetchUserProfile(uuid: String?) {
         view?.showProgress(true)
-        repository.fetchUserProfile(uuid, object : RequestCallback<Pair<UserAuth, Boolean?>>{
-            override fun onSuccess(data: Pair<UserAuth, Boolean?>) {
+        repository.fetchUserProfile(uuid, object : RequestCallback<Pair<User, Boolean?>>{
+            override fun onSuccess(data: Pair<User, Boolean?>) {
                 view?.displayUserProfile(data)
             }
 
@@ -51,6 +52,10 @@ class ProfilePresenter(
     override fun followUser(uuid: String?, follow: Boolean) {
         repository.followUser(uuid, follow, object : RequestCallback<Boolean>{
             override fun onSuccess(data: Boolean) {
+                fetchUserProfile(uuid)
+                if(data) {
+                    view?.followUpdated();
+                }
             }
             override fun onFailure(msg: String) {
             }

@@ -2,7 +2,7 @@ package co.tiagoaguiar.course.instagram.login.data
 
 import com.google.firebase.auth.FirebaseAuth
 
-class FireDataSource : LoginDataSource {
+class FireLoginDataSource : LoginDataSource {
     override fun login(email: String, password: String, callback: LoginCallback) {
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
             .addOnSuccessListener { res ->

@@ -1,5 +1,6 @@
 package co.tiagoaguiar.course.instagram.main.view
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -14,14 +15,18 @@ import co.tiagoaguiar.course.instagram.post.view.AddFragment
 import co.tiagoaguiar.course.instagram.commom.extensions.replaceFragment
 import co.tiagoaguiar.course.instagram.databinding.ActivityMainBinding
 import co.tiagoaguiar.course.instagram.home.view.HomeFragment
+import co.tiagoaguiar.course.instagram.main.LogoutListener
+import co.tiagoaguiar.course.instagram.profile.Profile
 import co.tiagoaguiar.course.instagram.profile.view.ProfileFragment
 import co.tiagoaguiar.course.instagram.search.view.SearchFragment
+import co.tiagoaguiar.course.instagram.splash.view.SplashActivity
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity(),
     BottomNavigationView.OnNavigationItemSelectedListener,
-    AddFragment.AddListener, SearchFragment.SearchListener {
+    AddFragment.AddListener, SearchFragment.SearchListener,
+    LogoutListener, Profile.View.FollowListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var homeFragment: HomeFragment
     private lateinit var profileFragment: ProfileFragment
@@ -103,7 +108,7 @@ class MainActivity : AppCompatActivity(),
 
     override fun onPostCreated() {
         homeFragment.presenter.clear()
-        if(supportFragmentManager.findFragmentByTag(profileFragment.javaClass.simpleName) != null) {
+        if (supportFragmentManager.findFragmentByTag(profileFragment.javaClass.simpleName) != null) {
             profileFragment.presenter.clear()
         }
         binding.bottomNavMain.selectedItemId = R.id.menu_bottom_home
@@ -111,8 +116,8 @@ class MainActivity : AppCompatActivity(),
 
     override fun goToProfile(uuid: String) {
         Log.d(TAG, "goToProfile: $uuid")
-        val fragment = ProfileFragment().apply{
-            arguments = Bundle().apply{
+        val fragment = ProfileFragment().apply {
+            arguments = Bundle().apply {
                 putString(ProfileFragment.KEY_USER_UUID, uuid)
             }
         }
@@ -120,6 +125,25 @@ class MainActivity : AppCompatActivity(),
             replace(R.id.fragment_main, fragment, fragment.javaClass.simpleName + "detail")
             addToBackStack(null)
             commit()
+        }
+    }
+
+    override fun logout() {
+        homeFragment.presenter.clear()
+        if (supportFragmentManager.findFragmentByTag(profileFragment.javaClass.simpleName) != null) {
+            profileFragment.presenter.clear()
+        }
+        homeFragment.presenter.logout()
+        val intent = Intent(baseContext, SplashActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+    }
+
+    override fun followUpdated() {
+        homeFragment.presenter.clear()
+        if (supportFragmentManager.findFragmentByTag(profileFragment.javaClass.simpleName) != null) {
+            profileFragment.presenter.clear()
         }
     }
 

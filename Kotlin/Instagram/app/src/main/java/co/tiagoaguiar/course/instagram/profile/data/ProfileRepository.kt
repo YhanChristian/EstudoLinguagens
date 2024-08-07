@@ -2,15 +2,16 @@ package co.tiagoaguiar.course.instagram.profile.data
 
 import co.tiagoaguiar.course.instagram.commom.base.RequestCallback
 import co.tiagoaguiar.course.instagram.commom.model.Post
+import co.tiagoaguiar.course.instagram.commom.model.User
 import co.tiagoaguiar.course.instagram.commom.model.UserAuth
 
 class ProfileRepository(private val dataSourceFactory: ProfileDataSourceFactory) {
-    fun fetchUserProfile(uuid: String?, callback: RequestCallback<Pair<UserAuth, Boolean?>>) {
+    fun fetchUserProfile(uuid: String?, callback: RequestCallback<Pair<User, Boolean?>>) {
         val localDataSource = dataSourceFactory.createLocalDataSource()
-        val userId = uuid ?: localDataSource.fetchSession().uuid
+        val userId = uuid ?: localDataSource.fetchSession()
         val dataSource = dataSourceFactory.createFromUser(userId)
-        dataSource.fetchUserProfile(userId, object : RequestCallback<Pair<UserAuth,Boolean?>> {
-            override fun onSuccess(data: Pair<UserAuth, Boolean?>) {
+        dataSource.fetchUserProfile(userId, object : RequestCallback<Pair<User,Boolean?>> {
+            override fun onSuccess(data: Pair<User, Boolean?>) {
                 if(uuid == null) localDataSource.putUser(data)
                 callback.onSuccess(data)
             }
@@ -27,7 +28,7 @@ class ProfileRepository(private val dataSourceFactory: ProfileDataSourceFactory)
     }
     fun fetchUserPosts(uuid: String?, callback: RequestCallback<List<Post>>) {
         val localDataSource = dataSourceFactory.createLocalDataSource()
-        val userId = uuid ?: localDataSource.fetchSession().uuid
+        val userId = uuid ?: localDataSource.fetchSession()
         val dataSource = dataSourceFactory.createFromPosts(userId)
         dataSource.fetchUserPosts(userId, object : RequestCallback<List<Post>> {
             override fun onSuccess(data: List<Post>) {
@@ -48,7 +49,7 @@ class ProfileRepository(private val dataSourceFactory: ProfileDataSourceFactory)
 
     fun followUser(uuid: String?, isFollow: Boolean, callback: RequestCallback<Boolean>) {
         val localDataSource = dataSourceFactory.createLocalDataSource()
-        val userId = uuid ?: localDataSource.fetchSession().uuid
+        val userId = uuid ?: localDataSource.fetchSession()
         val dataSource = dataSourceFactory.createFromUser(userId)
         dataSource.followUser(userId, isFollow, object : RequestCallback<Boolean> {
             override fun onSuccess(data: Boolean) {
@@ -69,5 +70,6 @@ class ProfileRepository(private val dataSourceFactory: ProfileDataSourceFactory)
     fun clearCache() {
         val localDataSource = dataSourceFactory.createLocalDataSource()
         localDataSource.putPosts(null)
+        localDataSource.putUser(null)
     }
 }

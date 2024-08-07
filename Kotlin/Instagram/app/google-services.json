@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "802738889681",
-    "project_id": "instagramclonekotlin-8617b",
-    "storage_bucket": "instagramclonekotlin-8617b.appspot.com"
+    "project_number": "your project number",
+    "project_id": "your project id",
+    "storage_bucket": "your storage"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:802738889681:android:1317c9a8b4b376347436f0",
+        "mobilesdk_app_id": "your app id",
         "android_client_info": {
           "package_name": "co.tiagoaguiar.course.instagram"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCUzx4r5lFqufwQL8KsQbyrrssGj_k4BuY"
+          "current_key": "you api key"
         }
       ],
       "services": {

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="?colorOnPrimary"
     tools:context=".login.view.LoginActivity">
 
     <ScrollView
@@ -34,13 +34,13 @@
             <TextView
                 style="@style/Theme.Instagram.TextViewBase.Form"
                 android:textSize="24sp"
-                android:textColor="@color/black"
+                android:textColor="?colorPrimary"
                 android:layout_gravity="center_horizontal"
                 android:text="@string/photo_register_title"/>
 
             <TextView
                 style="@style/Theme.Instagram.TextViewBase.Form"
-                android:textColor="@color/black"
+                android:textColor="?colorPrimary"
                 android:layout_gravity="center_horizontal"
                 android:text="@string/photo_register_subtitle"/>
 

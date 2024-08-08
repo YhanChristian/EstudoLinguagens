@@ -1,6 +1,9 @@
 package co.tiagoaguiar.course.instagram.register.view
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +29,11 @@ class RegisterEmailFragment : Fragment(R.layout.fragment_register_email), Regist
         presenter = RegisterEmailPresenter(this, DependencyInjector.registerEmailRepository())
         binding?.let {
             with(it) {
+                when(resources.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
+                    Configuration.UI_MODE_NIGHT_YES -> {
+                        imgRegisterLogo.imageTintList = ColorStateList.valueOf(Color.WHITE)
+                    }
+                }
                 editRegisterEmail.addTextChangedListener(watcher)
                 textRegisterLogin.setOnClickListener {
                     activity?.finish()

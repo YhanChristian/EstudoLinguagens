@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/text_dialog_custom_title"
-        android:textColor="@color/black"
+        android:textColor="?colorPrimary"
         android:textStyle="bold"
         android:text="@string/define_photo_profile"
         android:layout_margin="12dp"

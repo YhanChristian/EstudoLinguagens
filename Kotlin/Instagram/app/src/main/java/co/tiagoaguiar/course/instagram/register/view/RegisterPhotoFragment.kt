@@ -1,6 +1,9 @@
 package co.tiagoaguiar.course.instagram.register.view
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.content.res.Configuration
+import android.graphics.Color
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
@@ -52,6 +55,11 @@ class RegisterPhotoFragment : Fragment(R.layout.fragment_register_photo), Regist
 
         binding?.let {
             with(it) {
+                when(resources.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
+                    Configuration.UI_MODE_NIGHT_YES -> {
+                        imageViewRegisterPhoto.imageTintList = ColorStateList.valueOf(Color.WHITE)
+                    }
+                }
                 buttonRegisterSkipPhoto.setOnClickListener {
                     fragmentAttachListener?.goToMainScreen()
                 }

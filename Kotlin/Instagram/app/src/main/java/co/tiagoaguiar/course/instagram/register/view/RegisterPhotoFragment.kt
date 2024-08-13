@@ -1,6 +1,8 @@
 package co.tiagoaguiar.course.instagram.register.view
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.graphics.Color
@@ -10,12 +12,10 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import co.tiagoaguiar.course.instagram.R
@@ -34,9 +34,6 @@ class RegisterPhotoFragment : Fragment(R.layout.fragment_register_photo), Regist
     private var fragmentAttachListener: FragmentAttachListener? = null
     override lateinit var presenter: RegisterPhoto.Presenter
 
-    companion object {
-        private const val TAG = "RegisterPhotoFragment"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,7 +88,10 @@ class RegisterPhotoFragment : Fragment(R.layout.fragment_register_photo), Regist
             when (it.id) {
                 R.string.photo -> {
                     Log.d(TAG, "Photo")
-                    fragmentAttachListener?.goToCameraScreen()
+                    when (allPermissionsGranted()) {
+                        true -> fragmentAttachListener?.goToCameraScreen()
+                        false -> getPermission.launch(REQUIRED_PERMISSION)
+                    }
                 }
 
                 R.string.gallery -> {
@@ -105,6 +105,21 @@ class RegisterPhotoFragment : Fragment(R.layout.fragment_register_photo), Regist
             }
         }
         customDialog.show()
+    }
+
+    private val getPermission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { _ ->
+        if (allPermissionsGranted()) {
+            fragmentAttachListener?.goToCameraScreen()
+        } else {
+            Toast.makeText(requireContext(), R.string.permission_camera_denied, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    private fun allPermissionsGranted(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            REQUIRED_PERMISSION[0]) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun onCropImageResult(uri: Uri?) {
@@ -131,4 +146,10 @@ class RegisterPhotoFragment : Fragment(R.layout.fragment_register_photo), Regist
     override fun onUpdateSuccess() {
         fragmentAttachListener?.goToMainScreen()
     }
+
+    companion object {
+        private const val TAG = "RegisterPhotoFragment"
+        private val REQUIRED_PERMISSION = arrayOf(Manifest.permission.CAMERA)
+    }
+
 }

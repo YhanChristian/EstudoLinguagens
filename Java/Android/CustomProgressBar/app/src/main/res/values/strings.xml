@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">CustomProgressBar</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="next">Next</string>
+    <string name="back">Back</string>
+    <string name="nula">null</string>
+    <string name="loading">Loading\n</string>
+    <string name="loading_description">Loading description Text Example\n</string>
+    <string name="show_card_with_progress">Show Card with Progress</string>
+    <string name="hide_progress_bar">Hide Progress Bar</string>
+</resources>
